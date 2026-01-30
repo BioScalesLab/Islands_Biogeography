@@ -169,7 +169,7 @@ model_beta_corals_taxonomic_present_null_gp2 <- brm(
 )
 
 model_beta_corals_taxonomic_present_null_gp2 <- add_criterion(model_beta_corals_taxonomic_present_null_gp2, "loo", save_psis = TRUE, reloo = T)
-
+save (XXX, "Inter_Data/xxx")
 
 # Assess model validity using LOO
 loo(model_beta_corals_taxonomic_present_null_gp2)
