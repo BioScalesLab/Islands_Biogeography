@@ -1,1 +1,165 @@
+# ============================================================================
+# ISLANDS BIOGEOGRAPHY - GITIGNORE
+# ============================================================================
+# Ignore files and directories that should not be committed to the repository
+
+# ============================================================================
+# R-specific files
+# ============================================================================
+
+# RStudio project user files
+.Rproj.user/
+.Rhistory
+.Rdata
+.Rdata.json
+.Ruserdata
+
+# Large R data files
+*.RData
 Islands.RData
+*.rda
+
+# R cache and temporary files
+.cache/
+.Rapp.history
+
+# ============================================================================
+# Large data files and models
+# ============================================================================
+
+# Large datasets not tracked with Git LFS
+large_*.csv
+*_backup.csv
+
+# Fitted model objects (save separately if needed)
+*.stan
+*.rds
+
+# Intermediate analysis outputs
+outputs/
+temp/
+scratch/
+
+# ============================================================================
+# IDE and Editor files
+# ============================================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+.vim/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ============================================================================
+# System files
+# ============================================================================
+
+# Windows
+Thumbs.db
+*.lnk
+Desktop.ini
+
+# Linux
+.directory
+
+# ============================================================================
+# Temporary and build files
+# ============================================================================
+
+# Package files
+*.tar.gz
+*.zip
+*.rar
+
+# Compiled objects and libraries
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Python cached files
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# ============================================================================
+# Documentation build files
+# ============================================================================
+
+# Sphinx documentation
+docs/_build/
+docs/.cache/
+
+# Generated reports (commit manually if needed)
+reports/
+
+# ============================================================================
+# Output and results files
+# ============================================================================
+
+# Keep structure but ignore large outputs
+# Uncomment to ignore all outputs, or use specific patterns
+# outputs/*.png
+# outputs/*.pdf
+# outputs/*.csv
+
+# Figures and plots (version control images selectively)
+*.png
+*.jpg
+*.jpeg
+*.pdf
+
+# ============================================================================
+# Project-specific ignores
+# ============================================================================
+
+# Local configuration files
+config_local.R
+secrets.R
+
+# Data backups (keep originals in Data/ only)
+Data/backups/
+Data/archives/
+
+# ============================================================================
+# Git LFS
+# ============================================================================
+# Track these patterns with: git lfs track "pattern"
+
+# Large data files managed with Git LFS
+*.RData
+
+# ============================================================================
+# Notes and personal files
+# ============================================================================
+
+# Personal notes and todos
+notes.txt
+TODO.txt
+NOTES.md
+
+# ============================================================================
+# End of .gitignore
+# ============================================================================

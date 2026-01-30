@@ -29,7 +29,18 @@ pacman::p_load(tidyverse, BiocManager, rstan, brms, tidybayes, bayestestR, bayes
 
 
 #
-options(mc.cores = parallel::detectCores())
+
+#options(mc.cores = parallel::detectCores())
+
+#
+
+# Parallel 
+
+total_cores <- 100L
+chains <- 4L
+threads_per_chain <- floor(total_cores / chains)  # = 25
+message("using chains=", chains, " threads_per_chain=", threads_per_chain,
+        " total threads=", chains * threads_per_chain)
 
 
 #Beta diversity and variables data ----
@@ -147,8 +158,10 @@ model_beta_corals_taxonomic_present_null_gp2 <- brm(
     (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -167,8 +180,10 @@ model_beta_corals_taxonomic_present_bayes_all <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -357,8 +372,10 @@ model_beta_corals_functional_present_null_gp2 <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -600,8 +617,10 @@ model_beta_fish_taxonomic_present_bayes_all <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -803,8 +822,10 @@ model_beta_fish_functional_present_bayes_all <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -833,10 +854,10 @@ pp_check(model_beta_fish_functional_present_bayes_all, ndraws = 50, type = "erro
 pp_check(model_beta_fish_functional_present_bayes_all, type='pit_ecdf_grouped', group = "Group1", prob = 0.95, plot_diff = F)
 pp_check(model_beta_fish_functional_present_bayes_all, type='pit_ecdf_grouped', group = "Group2", prob = 0.95, plot_diff = F)
 
-pp_check(model_beta_fish_functional_present_bayes_all, ndraws = 50, type = "scatter_avg_grouped", group = "Group2")
+#pp_check(model_beta_fish_functional_present_bayes_all, ndraws = 50, type = "scatter_avg_grouped", group = "Group2")
 
-pairs(model_beta_fish_functional_present_bayes_all, variable = variables(model_beta_fish_functional_present_bayes_all_g)[1:5])
-fish_functional %>% select(Group1, Group2) %>% unique %>% view
+#pairs(model_beta_fish_functional_present_bayes_all, variable = variables(model_beta_fish_functional_present_bayes_all_g)[1:5])
+#fish_functional %>% select(Group1, Group2) %>% unique %>% view
 
 #any pathological model behaviour?
 rstan::check_hmc_diagnostics(model_beta_fish_functional_present_bayes_all$fit) 
@@ -999,16 +1020,18 @@ model_beta_plants_taxonomic_present_null <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
-  control = list(adapt_delta = 0.98, max_treedepth = 14),
+  control = list(adapt_delta = 0.99, max_treedepth = 14),
 )
 
 
-model_beta_plants_taxonomic_present_null <- add_criterion(model_beta_plants_taxonomic_present_nestest_null, "loo", save_psis = TRUE, reloo = T)
+model_beta_plants_taxonomic_present_null <- add_criterion(model_beta_plants_taxonomic_present_null, "loo", save_psis = TRUE, reloo = T)
 
 # Assess model validity using LOO
 loo(model_beta_plants_taxonomic_present_null)
@@ -1022,8 +1045,10 @@ model_beta_plants_taxonomic_present <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -1170,12 +1195,14 @@ model_beta_plants_functional_present_null <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
-  iter = 5000,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
+  iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
-  control = list(adapt_delta = 0.98, max_treedepth = 14),
+  control = list(adapt_delta = 0.99, max_treedepth = 14),
 )
 
 
@@ -1193,8 +1220,10 @@ model_beta_plants_functional_present <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -1356,12 +1385,14 @@ model_beta_birds_taxonomic_present_null <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
-  control = list(adapt_delta = 0.98, max_treedepth = 14),
+  control = list(adapt_delta = 0.99, max_treedepth = 14),
 )
 
 
@@ -1379,8 +1410,10 @@ model_beta_birds_taxonomic_present <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -1432,7 +1465,7 @@ p1 <- birds_taxonomic %>%
   modelr::data_grid(distance_km_sc = seq_range(distance_km_sc, n = 100) %>% as.numeric,
                     diff_emerse_pres_sc = median(diff_emerse_pres_sc, na.rm = T),
                     diff_island_age_sc = median(diff_island_age_sc, na.rm = T),
-                    diff_present_air = seq_range(diff_present_air, n = 10)) %>% 
+                    diff_present_air = median(diff_present_air, na.rm = T)) %>% 
   add_epred_draws(model_beta_birds_taxonomic_present, re_formula = NA, ndraws = 1000) %>% unique %>% 
   ggplot(aes(y = .epred, x = distance_km_sc)) +
   # geom_point(data = corals_taxonomic$beta_sor_adj, alpha = 0.2)+
@@ -1446,7 +1479,7 @@ p2 <- birds_taxonomic %>%
   modelr::data_grid(distance_km_sc = median(distance_km_sc, na.rm = T) %>% as.numeric,
                     diff_emerse_pres_sc = seq_range(diff_emerse_pres_sc, n = 10),
                     diff_island_age_sc = median(diff_island_age_sc, na.rm = T),
-                    diff_present_air = seq_range(diff_present_air, n = 10)) %>% 
+                    diff_present_air = median(diff_present_air, na.rm = T)) %>% 
   add_epred_draws(model_beta_birds_taxonomic_present, re_formula = NA, ndraws = 1000) %>% unique %>% 
   ggplot(aes(y = .epred, x = diff_emerse_pres_sc)) +
   # geom_point(data = corals_taxonomic$beta_sor_adj, alpha = 0.2)+
@@ -1460,7 +1493,7 @@ p3 <- birds_taxonomic %>%
   modelr::data_grid(distance_km_sc = median(distance_km_sc, na.rm = T) %>% as.numeric,
                     diff_emerse_pres_sc = median(diff_emerse_pres_sc, na.rm = T),
                     diff_island_age_sc = seq_range(diff_island_age_sc, n = 10),
-                    diff_present_air = seq_range(diff_present_air, n = 10)) %>% 
+                    diff_present_air = median(diff_present_air, na.rm = T)) %>% 
   add_epred_draws(model_beta_birds_taxonomic_present, re_formula = NA, ndraws = 1000) %>% unique %>% 
   ggplot(aes(y = .epred, x = diff_island_age_sc)) +
   # geom_point(data = corals_taxonomic$beta_sor_adj, alpha = 0.2)+
@@ -1528,8 +1561,10 @@ model_beta_birds_functional_present_null <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -1551,8 +1586,10 @@ model_beta_birds_functional_present <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -1605,7 +1642,7 @@ p1 <- birds_functional %>%
   modelr::data_grid(distance_km_sc = seq_range(distance_km_sc, n = 100) %>% as.numeric,
                     diff_emerse_pres_sc = median(diff_emerse_pres_sc, na.rm = T),
                     diff_island_age_sc = median(diff_island_age_sc, na.rm = T),
-                    diff_present_air = seq_range(diff_present_air, n = 10)) %>% 
+                    diff_present_air = median(diff_present_air, na.rm = T)) %>% 
   add_epred_draws(model_beta_birds_functional_present, re_formula = NA, ndraws = 1000) %>% unique %>% 
   ggplot(aes(y = .epred, x = distance_km_sc)) +
   # geom_point(data = corals_functional$beta_sor_adj, alpha = 0.2)+
@@ -1619,7 +1656,7 @@ p2 <- birds_functional %>%
   modelr::data_grid(distance_km_sc = median(distance_km_sc, na.rm = T) %>% as.numeric,
                     diff_emerse_pres_sc = seq_range(diff_emerse_pres_sc, n = 10),
                     diff_island_age_sc = median(diff_island_age_sc, na.rm = T),
-                    diff_present_air = seq_range(diff_present_air, n = 10)) %>% 
+                    diff_present_air = median(diff_present_air, na.rm = T)) %>% 
   add_epred_draws(model_beta_birds_functional_present, re_formula = NA, ndraws = 1000) %>% unique %>% 
   ggplot(aes(y = .epred, x = diff_emerse_pres_sc)) +
   # geom_point(data = corals_functional$beta_sor_adj, alpha = 0.2)+
@@ -1632,7 +1669,8 @@ p2 <- birds_functional %>%
 p3 <- birds_functional %>% 
   modelr::data_grid(distance_km_sc = median(distance_km_sc, na.rm = T) %>% as.numeric,
                     diff_emerse_pres_sc = median(diff_emerse_pres_sc, na.rm = T),
-                    diff_island_age_sc = seq_range(diff_island_age_sc, n = 10)) %>% 
+                    diff_island_age_sc = seq_range(diff_island_age_sc, n = 10),
+                    diff_present_air = median(diff_present_air, na.rm = T)) %>% 
   add_epred_draws(model_beta_birds_functional_present, re_formula = NA, ndraws = 1000) %>% unique %>% 
   ggplot(aes(y = .epred, x = diff_island_age_sc)) +
   # geom_point(data = corals_functional$beta_sor_adj, alpha = 0.2)+
@@ -1730,8 +1768,10 @@ model_beta_corals_taxonomic_past_null_gp2 <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -1750,8 +1790,10 @@ model_beta_corals_taxonomic_past_bayes_all <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -1931,8 +1973,10 @@ model_beta_corals_functional_past_null_gp2 <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -1951,8 +1995,10 @@ model_beta_corals_functional_past_bayes_all <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -2003,7 +2049,7 @@ model_parameters(model_beta_corals_functional_past_bayes_all, exponentiate = T, 
 p1 <- corals_functional %>% 
   modelr::data_grid(
     diff_past_isolation_sc = seq_range(diff_past_isolation_sc, n = 10),
-    diff_reef_past_area_sc = mean(diff_past_reef_area_sc),
+    diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     diff_age_sc = mean(diff_age_sc),
     dist_sc = mean(dist_sc),
     diff_past_sst = mean(diff_past_sst)
@@ -2039,10 +2085,10 @@ p2 <- corals_functional %>%
 p3 <- corals_functional %>% 
   modelr::data_grid(
     diff_past_isolation_sc = mean(diff_past_isolation_sc),
-    diff_past_sst = mean(diff_past_sst),
+    diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     diff_age_sc = seq_range(diff_age_sc, n = 10),
     dist_sc = mean(dist_sc),
-    diff_present_sst = mean(diff_present_sst)
+    diff_past_sst = mean(diff_past_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_functional_past_bayes_all,
                   re_formula = NA, ndraws = 500) %>% 
@@ -2056,8 +2102,8 @@ p3 <- corals_functional %>%
 # 
 p4 <- corals_functional %>% 
   modelr::data_grid(
-    diff_isolation_sc = mean(diff_isolation_sc),
-    diff_reef_area_sc = mean(diff_reef_area_sc),
+    diff_past_isolation_sc = mean(diff_past_isolation_sc),
+    diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     dist_sc = seq_range(dist_sc, n = 10),
     diff_age_sc = mean(diff_age_sc),
     diff_past_sst = mean(diff_past_sst)
@@ -2075,7 +2121,7 @@ p4 <- corals_functional %>%
 
 p5 <- corals_functional %>% 
   modelr::data_grid(
-    diff_isolation_sc = mean(diff_isolation_sc),
+    diff_past_isolation_sc = mean(diff_past_isolation_sc),
     diff_reef_area_sc = mean(diff_reef_area_sc),
     dist_sc = mean(dist_sc),
     diff_age_sc = mean(diff_age_sc),
@@ -2165,8 +2211,10 @@ model_beta_fish_taxonomic_past_bayes_all <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -2339,8 +2387,10 @@ model_beta_fish_functional_past_null_gp2 <- brm(
   beta_sor_adj ~ 1 + (1+dist_sc|Group1) + (1+dist_sc|Group2) ,
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -2360,8 +2410,10 @@ model_beta_fish_functional_past_bayes_all <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -2557,8 +2609,10 @@ model_beta_plants_taxonomic_past_null<- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -2576,12 +2630,14 @@ loo(model_beta_plants_taxonomic_past_null)
 # past
 
 model_beta_plants_taxonomic_past <- brm(
-  beta_sor_adj ~  diff_past_emerse_past_sc + diff_past_island_age_sc + d_past_sc + diff_past_air + 
+  beta_sor_adj ~  diff_emerse_past_sc + diff_island_age_sc + d_past_sc + diff_past_air + 
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -2727,8 +2783,10 @@ model_beta_plants_functional_past_null<- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -2750,8 +2808,10 @@ model_beta_plants_functional_past <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -2843,8 +2903,8 @@ p3 <- plants_functional %>%
 
 
 p4 <- plants_functional %>% 
-  modelr::data_grid(distance_km_sc = median(distance_km_sc, na.rm = T) %>% as.numeric,
-                    diff_emerse_pres_sc = median(diff_emerse_pres_sc, na.rm = T),
+  modelr::data_grid(d_past_sc = median(d_past_sc, na.rm = T) %>% as.numeric,
+                    diff_emerse_past_sc = median(diff_emerse_past_sc, na.rm = T),
                     diff_island_age_sc = median(diff_island_age_sc, na.rm = T),
                     diff_past_air = seq_range(diff_past_air, n = 10)) %>% 
   add_epred_draws(model_beta_plants_functional_past, re_formula = NA, ndraws = 1000) %>% unique %>% 
@@ -2858,6 +2918,7 @@ p4 <- plants_functional %>%
 
 library(cowplot)
 
+p1 / p2 / p3 / p4
 
 
 #7. Terrestrial - BIRDS BETA TAXONOMIC ----
@@ -2895,8 +2956,10 @@ model_beta_birds_taxonomic_past_null <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -2918,8 +2981,10 @@ model_beta_birds_taxonomic_past <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -3011,8 +3076,8 @@ p3 <- birds_taxonomic %>%
   labs(x = "Difference Island Age", y = "Beta diversity")
 
 p4 <- birds_taxonomic %>% 
-  modelr::data_grid(distance_km_sc = median(distance_km_sc, na.rm = T) %>% as.numeric,
-                    diff_emerse_pres_sc = median(diff_emerse_pres_sc, na.rm = T),
+  modelr::data_grid(d_past_sc = median(d_past_sc, na.rm = T) %>% as.numeric,
+                    diff_emerse_past_sc = median(diff_emerse_past_sc, na.rm = T),
                     diff_island_age_sc = median(diff_island_age_sc, na.rm = T),
                     diff_past_air = seq_range(diff_past_air, n = 10)) %>% 
   add_epred_draws(model_beta_birds_taxonomic_past, re_formula = NA, ndraws = 1000) %>% unique %>% 
@@ -3067,8 +3132,10 @@ model_beta_birds_functional_past_null <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -3090,8 +3157,10 @@ model_beta_birds_functional_past <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -3277,8 +3346,10 @@ model_beta_corals_taxonomic_present_null_gp2 <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -3297,8 +3368,10 @@ model_beta_corals_taxonomic_present_bayes_nest <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -3479,8 +3552,10 @@ model_beta_corals_functional_present_null_nest_gp2 <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -3499,8 +3574,10 @@ model_beta_corals_functional_present_bayes_nest <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -3714,8 +3791,10 @@ model_beta_fish_taxonomic_present_bayes_nest <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -3887,8 +3966,10 @@ model_beta_fish_functional_present_null_nest_gp2 <- brm(
   beta_sne_adj ~ 1 + (1+dist_sc|Group1) + (1+dist_sc|Group2) ,
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -3908,8 +3989,10 @@ model_beta_fish_functional_present_bayes_nest <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -3933,15 +4016,15 @@ loo(model_beta_fish_functional_present_bayes_nest)
 pp_check(model_beta_fish_functional_present_bayes_nest , ndraws = 50) 
 pp_check(model_beta_fish_functional_present_bayes_nest, type = "ecdf_overlay", ndraws = 50) 
 pp_check(model_beta_fish_functional_present_bayes_nest , ndraws = 50, type = "dens_overlay_grouped", group = "Group1")
-pp_check(model_beta_fish_functional_present_bayes_nest_g , ndraws = 50, type = "scatter_avg_grouped", group = "Group1")
-pp_check(model_beta_fish_functional_present_bayes_nest_g , ndraws = 50, type = "error_scatter_avg_grouped", group = "Group1")
-pp_check(model_beta_fish_functional_present_bayes_nest_g, type='pit_ecdf_grouped', group = "Group1", prob = 0.95, plot_diff = F)
-pp_check(model_beta_fish_functional_present_bayes_nest_g, type='pit_ecdf_grouped', group = "Group2", prob = 0.95, plot_diff = F)
-
-pp_check(model_beta_fish_functional_present_bayes_nest_g , ndraws = 50, type = "scatter_avg_grouped", group = "Group2")
-
-pairs(model_beta_fish_functional_present_bayes_nest_g, variable = variables(model_beta_fish_functional_present_bayes_nest_g)[1:5])
-fish_functional %>% select(Group1, Group2) %>% unique %>% view
+# pp_check(model_beta_fish_functional_present_bayes_nest_g , ndraws = 50, type = "scatter_avg_grouped", group = "Group1")
+# pp_check(model_beta_fish_functional_present_bayes_nest_g , ndraws = 50, type = "error_scatter_avg_grouped", group = "Group1")
+# pp_check(model_beta_fish_functional_present_bayes_nest_g, type='pit_ecdf_grouped', group = "Group1", prob = 0.95, plot_diff = F)
+# pp_check(model_beta_fish_functional_present_bayes_nest_g, type='pit_ecdf_grouped', group = "Group2", prob = 0.95, plot_diff = F)
+# 
+# pp_check(model_beta_fish_functional_present_bayes_nest_g , ndraws = 50, type = "scatter_avg_grouped", group = "Group2")
+# 
+# pairs(model_beta_fish_functional_present_bayes_nest_g, variable = variables(model_beta_fish_functional_present_bayes_nest_g)[1:5])
+# fish_functional %>% select(Group1, Group2) %>% unique %>% view
 
 #any pathological model behaviour?
 rstan::check_hmc_diagnostics(model_beta_fish_functional_present_bayes_nest$fit) 
@@ -4099,8 +4182,10 @@ model_beta_plants_taxonomic_present_nest_null_nest <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -4122,8 +4207,10 @@ model_beta_plants_taxonomic_present_nest <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -4269,8 +4356,10 @@ model_beta_plants_functional_present_null_nest <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -4292,8 +4381,10 @@ model_beta_plants_functional_present_nest <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -4440,8 +4531,10 @@ model_beta_birds_taxonomic_present_null_nest <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -4463,8 +4556,10 @@ model_beta_birds_taxonomic_present_nest <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -4611,8 +4706,10 @@ model_beta_birds_functional_present_null_nest <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -4634,8 +4731,10 @@ model_beta_birds_functional_present_nest <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -4815,8 +4914,10 @@ model_beta_corals_taxonomic_past_null_nest_gp2 <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -4835,8 +4936,10 @@ model_beta_corals_taxonomic_past_bayes_nest <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -4893,7 +4996,7 @@ p1 <- corals_taxonomic %>%
     diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     diff_age_sc = mean(diff_age_sc),
     dist_sc = mean(dist_sc),
-    diff_past_sst = seq_range(diff_past_sst)
+    diff_past_sst = mean(diff_past_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_taxonomic_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
@@ -4911,7 +5014,7 @@ p2 <- corals_taxonomic %>%
     diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     diff_age_sc = mean(diff_age_sc),
     dist_sc = mean(dist_sc),
-    diff_past_sst = seq_range(diff_past_sst)
+    diff_past_sst = mean(diff_past_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_taxonomic_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
@@ -4929,7 +5032,7 @@ p3 <- corals_taxonomic %>%
     diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     diff_age_sc = seq_range(diff_age_sc, n = 10),
     dist_sc = mean(dist_sc),
-    diff_past_sst = seq_range(diff_past_sst)
+    diff_past_sst = mean(diff_past_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_taxonomic_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
@@ -4947,7 +5050,7 @@ p4 <- corals_taxonomic %>%
     diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     dist_sc = seq_range(dist_sc, n = 10),
     diff_age_sc = mean(diff_age_sc),
-    diff_past_sst = seq_range(diff_past_sst)
+    diff_past_sst = mean(diff_past_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_taxonomic_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
@@ -4958,6 +5061,7 @@ p4 <- corals_taxonomic %>%
   coord_cartesian(ylim = c(0,1)) +
   labs(x = "Difference in Arch distance", y = "Beta diversity")
 
+#
 p5 <- corals_taxonomic %>% 
   modelr::data_grid(
     diff_past_isolation_sc = mean(diff_past_isolation_sc),
@@ -4969,7 +5073,7 @@ p5 <- corals_taxonomic %>%
   add_epred_draws(model_beta_corals_taxonomic_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
   unique %>% 
-  ggplot(aes(y = .epred, x = diff_present_sst)) +
+  ggplot(aes(y = .epred, x = diff_past_sst)) +
   geom_line(aes(group = .draw), alpha = .08) +
   theme_tidybayes() +
   coord_cartesian(ylim = c(0,1)) +
@@ -5010,8 +5114,10 @@ model_beta_corals_functional_past_null_nest_gp2 <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -5030,8 +5136,10 @@ model_beta_corals_functional_past_bayes_nest <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -5085,7 +5193,8 @@ p1 <- corals_functional %>%
     diff_past_isolation_sc = seq_range(diff_past_isolation_sc, n = 10),
     diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     diff_age_sc = mean(diff_age_sc),
-    dist_sc = mean(dist_sc)
+    dist_sc = mean(dist_sc),
+    diff_past_sst = mean (diff_past_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_functional_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
@@ -5102,7 +5211,8 @@ p2 <- corals_functional %>%
     diff_past_isolation_sc = mean(diff_past_isolation_sc),
     diff_past_reef_area_sc = seq_range(diff_past_reef_area_sc, n = 10),
     diff_age_sc = mean(diff_age_sc),
-    dist_sc = mean(dist_sc)
+    dist_sc = mean(dist_sc),
+    diff_past_sst = mean (diff_past_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_functional_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
@@ -5119,7 +5229,8 @@ p3 <- corals_functional %>%
     diff_past_isolation_sc = mean(diff_past_isolation_sc),
     diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     diff_age_sc = seq_range(diff_age_sc, n = 10),
-    dist_sc = mean(dist_sc)
+    dist_sc = mean(dist_sc),
+    diff_past_sst = mean (diff_past_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_functional_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
@@ -5136,7 +5247,8 @@ p4 <- corals_functional %>%
     diff_past_isolation_sc = mean(diff_past_isolation_sc),
     diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     diff_age_sc = mean(diff_age_sc),
-    dist_sc = seq_range(dist_sc, n = 10)
+    dist_sc = seq_range(dist_sc, n = 10),
+    diff_past_sst = mean (diff_past_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_functional_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
@@ -5159,7 +5271,7 @@ p5 <- corals_taxonomic %>%
   add_epred_draws(model_beta_corals_functional_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
   unique %>% 
-  ggplot(aes(y = .epred, x = diff_present_sst)) +
+  ggplot(aes(y = .epred, x = diff_past_sst)) +
   geom_line(aes(group = .draw), alpha = .08) +
   theme_tidybayes() +
   coord_cartesian(ylim = c(0,1)) +
@@ -5214,8 +5326,10 @@ model_beta_fish_taxonomic_past_null_nest_gp2 <- brm(
   beta_sne_adj ~ 1 + (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -5237,8 +5351,10 @@ model_beta_fish_taxonomic_past_bayes_nest <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -5407,8 +5523,10 @@ model_beta_fish_functional_past_null_nest_nest_gp2 <- brm(
   beta_sne_adj ~ 1 + (1+dist_sc|Group1) + (1+dist_sc|Group2) ,
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -5428,8 +5546,10 @@ model_beta_fish_functional_past_bayes_nest <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -5571,7 +5691,7 @@ p5 <- fish_functional %>%
   add_epred_draws(model_beta_fish_functional_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
   unique %>% 
-  ggplot(aes(y = .epred, x = diff_present_sst)) +
+  ggplot(aes(y = .epred, x = diff_past_sst)) +
   geom_line(aes(group = .draw), alpha = .08) +
   theme_tidybayes() +
   coord_cartesian(ylim = c(0,1)) +
@@ -5622,8 +5742,10 @@ model_beta_plants_taxonomic_past_null_nest <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -5645,8 +5767,10 @@ model_beta_plants_taxonomic_past_nest <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -5792,8 +5916,10 @@ model_beta_plants_functional_past_null_nest <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -5815,8 +5941,10 @@ model_beta_plants_functional_past_nest <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -5962,8 +6090,10 @@ model_beta_birds_taxonomic_past_null_nest <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -5985,8 +6115,10 @@ model_beta_birds_taxonomic_past_nest <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -6156,8 +6288,10 @@ model_beta_birds_functional_past_nest <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -6341,8 +6475,10 @@ model_beta_corals_taxonomic_present_null_turn <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -6357,12 +6493,14 @@ loo(model_beta_corals_taxonomic_present_null_turn)
 
 # Present
 model_beta_corals_taxonomic_present_bayes_turn <- brm(
-  beta_sim_adj ~ diff_isolation_sc + diff_reef_area_sc + diff_age_sc + dist_sc + diff_sst +
+  beta_sim_adj ~ diff_isolation_sc + diff_reef_area_sc + diff_age_sc + dist_sc + diff_present_sst +
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -6543,8 +6681,10 @@ model_beta_corals_functional_present_null_turn_gp2 <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -6563,8 +6703,10 @@ model_beta_corals_functional_present_bayes_turn <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -6671,7 +6813,8 @@ p4 <- corals_functional %>%
     diff_isolation_sc = mean(diff_isolation_sc),
     diff_reef_area_sc = mean(diff_reef_area_sc),
     dist_sc = seq_range(dist_sc, n = 10),
-    diff_age_sc = mean(diff_age_sc)
+    diff_age_sc = mean(diff_age_sc),
+    diff_present_sst = mean(diff_present_sst)
   ) %>% 
   add_epred_draws(model_beta_corals_functional_present_bayes_turn,
                   re_formula = NA, ndraws = 500) %>% 
@@ -6754,8 +6897,10 @@ model_beta_fish_taxonomic_present_null_turn_gp2 <- brm(
   beta_sim_adj ~ 1 + (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -6777,8 +6922,10 @@ model_beta_fish_taxonomic_present_bayes_turn <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -6950,8 +7097,10 @@ model_beta_fish_functional_present_null_turn_gp2 <- brm(
   beta_sim_adj ~ 1 + (1+dist_sc|Group1) + (1+dist_sc|Group2) ,
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -6971,8 +7120,10 @@ model_beta_fish_functional_present_bayes_turn <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -7003,8 +7154,8 @@ pp_check(model_beta_fish_functional_present_bayes_turn_g, type='pit_ecdf_grouped
 
 pp_check(model_beta_fish_functional_present_bayes_turn_g , ndraws = 50, type = "scatter_avg_grouped", group = "Group2")
 
-pairs(model_beta_fish_functional_present_bayes_turn_g, variable = variables(model_beta_fish_functional_present_bayes_turn_g)[1:5])
-fish_functional %>% select(Group1, Group2) %>% unique %>% view
+#pairs(model_beta_fish_functional_present_bayes_turn_g, variable = variables(model_beta_fish_functional_present_bayes_turn_g)[1:5])
+#fish_functional %>% select(Group1, Group2) %>% unique %>% view
 
 #any pathological model behaviour?
 rstan::check_hmc_diagnostics(model_beta_fish_functional_present_bayes_turn$fit) 
@@ -7167,8 +7318,10 @@ model_beta_plants_taxonomic_present_turn_null_turn <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -7190,8 +7343,10 @@ model_beta_plants_taxonomic_present_turn <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -7337,8 +7492,10 @@ model_beta_plants_functional_present_null_turn <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -7360,8 +7517,10 @@ model_beta_plants_functional_present_turn <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -7506,8 +7665,10 @@ model_beta_birds_taxonomic_present_null_turn <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -7529,8 +7690,10 @@ model_beta_birds_taxonomic_present_turn <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -7675,8 +7838,10 @@ model_beta_birds_functional_present_null_turn <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -7698,8 +7863,10 @@ model_beta_birds_functional_present_turn <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -7863,8 +8030,10 @@ model_beta_corals_taxonomic_past_null_turn_gp2 <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -7883,8 +8052,10 @@ model_beta_corals_taxonomic_past_bayes_turn <- brm(
     (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -8017,7 +8188,7 @@ p5 <- corals_taxonomic %>%
   add_epred_draws(model_beta_corals_taxonomic_past_bayes_turn,
                   re_formula = NA, ndraws = 500) %>% 
   unique %>% 
-  ggplot(aes(y = .epred, x = diff_present_sst)) +
+  ggplot(aes(y = .epred, x = diff_past_sst)) +
   geom_line(aes(group = .draw), alpha = .08) +
   theme_tidybayes() +
   coord_cartesian(ylim = c(0,1)) +
@@ -8083,8 +8254,10 @@ model_beta_corals_functional_past_bayes_turn <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = corals_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -8214,7 +8387,7 @@ p5 <- corals_functional %>%
   add_epred_draws(model_beta_corals_functional_past_bayes_turn,
                   re_formula = NA, ndraws = 500) %>% 
   unique %>% 
-  ggplot(aes(y = .epred, x = diff_present_sst)) +
+  ggplot(aes(y = .epred, x = diff_past_sst)) +
   geom_line(aes(group = .draw), alpha = .08) +
   theme_tidybayes() +
   coord_cartesian(ylim = c(0,1)) +
@@ -8273,8 +8446,10 @@ model_beta_fish_taxonomic_past_null_turn_gp2 <- brm(
   beta_sim_adj ~ 1 + (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -8296,8 +8471,10 @@ model_beta_fish_taxonomic_past_bayes_turn <- brm(
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -8425,7 +8602,7 @@ p5 <- fish_taxonomic %>%
   add_epred_draws(model_beta_fish_taxonomic_past_bayes_turn,
                   re_formula = NA, ndraws = 500) %>% 
   unique %>% 
-  ggplot(aes(y = .epred, x = diff_present_sst)) +
+  ggplot(aes(y = .epred, x = diff_past_sst)) +
   geom_line(aes(group = .draw), alpha = .08) +
   theme_tidybayes() +
   coord_cartesian(ylim = c(0,1)) +
@@ -8466,8 +8643,10 @@ model_beta_fish_functional_past_null_turn_gp2 <- brm(
   beta_sim_adj ~ 1 + (1+dist_sc|Group1) + (1+dist_sc|Group2) ,
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   control = list(adapt_delta = 0.99, max_treedepth = 14),
@@ -8483,12 +8662,14 @@ loo(model_beta_fish_functional_past_null_turn_gp2)
 
 # past
 model_beta_fish_functional_past_bayes_turn <- brm(
-  beta_sim_adj ~  1 + diff_past_isolation_sc + diff_past_reef_area_sc + diff_age_sc + dist_sc _ diff_past_sst +
+  beta_sim_adj ~  1 + diff_past_isolation_sc + diff_past_reef_area_sc + diff_age_sc + dist_sc + diff_past_sst +
   (1+dist_sc|Group1) + (1+dist_sc|Group2),
   data = fish_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -8628,7 +8809,7 @@ p5 <- fish_functional %>%
   add_epred_draws(model_beta_fish_functional_past_bayes_turn,
                   re_formula = NA, ndraws = 500) %>% 
   unique %>% 
-  ggplot(aes(y = .epred, x = diff_present_sst)) +
+  ggplot(aes(y = .epred, x = diff_past_sst)) +
   geom_line(aes(group = .draw), alpha = .08) +
   theme_tidybayes() +
   coord_cartesian(ylim = c(0,1)) +
@@ -8680,8 +8861,10 @@ model_beta_plants_taxonomic_past_null_turn <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -8703,8 +8886,10 @@ model_beta_plants_taxonomic_past_turn <- brm(
     (1 | Archipelago),
   data = plants_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -8850,8 +9035,10 @@ model_beta_plants_functional_past_null_turn <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -8873,8 +9060,10 @@ model_beta_plants_functional_past_turn <- brm(
     (1 | Archipelago),
   data = plants_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -9021,8 +9210,10 @@ model_beta_birds_taxonomic_past_null_turn <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -9044,8 +9235,10 @@ model_beta_birds_taxonomic_past_turn <- brm(
     (1 | Archipelago),
   data = birds_taxonomic,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -9095,10 +9288,10 @@ model_parameters(model_beta_birds_taxonomic_past_turn, exponentiate = T, ci = 0.
 
 #Plotting isolation effects
 p1 <- birds_taxonomic %>% 
-  modelr::data_grid(d_past_sc = seq_range(d_past_sc, n = 100) %>% as.numeric,
+  modelr::data_grid(d_past_sc = seq_range(d_past_sc, n = 10) %>% as.numeric,
                     diff_emerse_past_sc = median(diff_emerse_past_sc, na.rm = T),
                     diff_island_age_sc = median(diff_island_age_sc, na.rm = T),
-                    diff_past_air = seq_range(diff_past_air, na.rm =T)) %>% 
+                    diff_past_air = median(diff_past_air, na.rm =T)) %>% 
   add_epred_draws(model_beta_birds_taxonomic_past_turn, re_formula = NA, ndraws = 1000) %>% unique %>% 
   ggplot(aes(y = .epred, x = d_past_sc)) +
   # geom_point(data = corals_taxonomic$beta_sim_adj, alpha = 0.2)+
@@ -9112,7 +9305,7 @@ p2 <- birds_taxonomic %>%
   modelr::data_grid(d_past_sc = median(d_past_sc, na.rm = T) %>% as.numeric,
                     diff_emerse_past_sc = seq_range(diff_emerse_past_sc, n = 10),
                     diff_island_age_sc = median(diff_island_age_sc, na.rm = T),
-                    diff_past_air = seq_range(diff_past_air, na.rm =T)) %>% 
+                    diff_past_air = median(diff_past_air, na.rm =T)) %>% 
   add_epred_draws(model_beta_birds_taxonomic_past_turn, re_formula = NA, ndraws = 1000) %>% unique %>% 
   ggplot(aes(y = .epred, x = diff_emerse_past_sc)) +
   # geom_point(data = corals_taxonomic$beta_sim_adj, alpha = 0.2)+
@@ -9126,7 +9319,7 @@ p3 <- birds_taxonomic %>%
   modelr::data_grid(d_past_sc = median(d_past_sc, na.rm = T) %>% as.numeric,
                     diff_emerse_past_sc = median(diff_emerse_past_sc, na.rm = T),
                     diff_island_age_sc = seq_range(diff_island_age_sc, n = 10),
-                    diff_past_air = seq_range(diff_past_air, na.rm =T)) %>% 
+                    diff_past_air = median(diff_past_air, na.rm =T)) %>% 
   add_epred_draws(model_beta_birds_taxonomic_past_turn, re_formula = NA, ndraws = 1000) %>% unique %>% 
   ggplot(aes(y = .epred, x = diff_island_age_sc)) +
   # geom_point(data = corals_taxonomic$beta_sim_adj, alpha = 0.2)+
@@ -9195,8 +9388,10 @@ model_beta_birds_functional_past_null_turn <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 5000,
   warmup = 3000,
   save_pars = save_pars(all = T),
@@ -9218,8 +9413,10 @@ model_beta_birds_functional_past_turn <- brm(
     (1 | Archipelago),
   data = birds_functional,
   family = beta_family(),
-  chains = 4,
-  cores = 4,
+  chains = chains,
+  cores = chains,           
+  backend = "cmdstanr",         
+  threads = threading(threads_per_chain),  
   iter = 4000,
   warmup = 3000,
   save_pars = save_pars(all = T),
