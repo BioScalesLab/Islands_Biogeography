@@ -422,7 +422,7 @@ model_beta_corals_functional_present_bayes_all <- add_criterion(model_beta_coral
 
 saveRDS(
   model_beta_corals_functional_present_bayes_all,
-  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_present_null_gp2.rds"
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_present_bayes_all.rds"
 )
 
 # Assess model validity using LOO
