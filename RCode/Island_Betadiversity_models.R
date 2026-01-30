@@ -169,7 +169,12 @@ model_beta_corals_taxonomic_present_null_gp2 <- brm(
 )
 
 model_beta_corals_taxonomic_present_null_gp2 <- add_criterion(model_beta_corals_taxonomic_present_null_gp2, "loo", save_psis = TRUE, reloo = T)
-save (XXX, "Inter_Data/xxx")
+
+saveRDS(
+  model_beta_corals_taxonomic_present_null_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_present_null_gp2.rds"
+)
+
 
 # Assess model validity using LOO
 loo(model_beta_corals_taxonomic_present_null_gp2)
@@ -195,6 +200,11 @@ model_beta_corals_taxonomic_present_bayes_all <- brm(
 model_beta_corals_taxonomic_present_bayes_all <- add_criterion(model_beta_corals_taxonomic_present_bayes_all, "loo", save_psis = TRUE, reloo = T)
 
 model_beta_corals_taxonomic_present_bayes_all
+
+saveRDS(
+  model_beta_corals_taxonomic_present_bayes_all,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_present_bayes_all.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_taxonomic_present_bayes_all)
@@ -384,6 +394,10 @@ model_beta_corals_functional_present_null_gp2 <- brm(
 
 model_beta_corals_functional_present_null_gp2 <- add_criterion(model_beta_corals_functional_present_null_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_functional_present_null_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_present_null_gp2.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_present_null_gp2)
@@ -405,6 +419,11 @@ model_beta_corals_functional_present_bayes_all <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_corals_functional_present_bayes_all <- add_criterion(model_beta_corals_functional_present_bayes_all, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_corals_functional_present_bayes_all,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_present_null_gp2.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_present_bayes_all)
@@ -604,6 +623,11 @@ model_beta_fish_taxonomic_present_null_gp2 <- brm(
 
 model_beta_fish_taxonomic_present_null_gp2 <- add_criterion(model_beta_fish_taxonomic_present_null_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_taxonomic_present_null_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_present_null_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_taxonomic_present_null_gp2)
 
@@ -630,6 +654,11 @@ model_beta_fish_taxonomic_present_bayes_all <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_fish_taxonomic_present_bayes_all <- add_criterion(model_beta_fish_taxonomic_present_bayes_all, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_fish_taxonomic_present_bayes_all,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_present_bayes_all"
+)
 
 model_beta_fish_taxonomic_present_bayes_all
 
@@ -811,9 +840,13 @@ model_beta_fish_functional_present_null_gp2 <- brm(
 
 model_beta_fish_functional_present_null_gp2 <- add_criterion(model_beta_fish_functional_present_null_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_functional_present_null_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_present_null_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_functional_present_null_gp2)
-
 
 
 # Present
@@ -836,6 +869,11 @@ model_beta_fish_functional_present_bayes_all <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_fish_functional_present_bayes_all <- add_criterion(model_beta_fish_functional_present_bayes_all, "loo", save_psis = TRUE, reloo = T, moment_match = TRUE)
+
+saveRDS(
+  model_beta_fish_functional_present_bayes_all,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_present_bayes_all.rds"
+)
 
 
 # Assess model validity using LOO
@@ -1033,6 +1071,12 @@ model_beta_plants_taxonomic_present_null <- brm(
 
 model_beta_plants_taxonomic_present_null <- add_criterion(model_beta_plants_taxonomic_present_null, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_taxonomic_present_null,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_present_null.rds"
+)
+
+
 # Assess model validity using LOO
 loo(model_beta_plants_taxonomic_present_null)
 
@@ -1058,6 +1102,12 @@ model_beta_plants_taxonomic_present <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_taxonomic_present <- add_criterion(model_beta_plants_taxonomic_present, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_taxonomic_present,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_present.rds"
+)
+
 
 loo(model_beta_plants_taxonomic_present)
 
@@ -1208,6 +1258,11 @@ model_beta_plants_functional_present_null <- brm(
 
 model_beta_plants_functional_present_null<- add_criterion(model_beta_plants_functional_present_null, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_functional_present_null,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_present_null.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_functional_present_null)
 
@@ -1233,6 +1288,11 @@ model_beta_plants_functional_present <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_functional_present <- add_criterion(model_beta_plants_functional_present, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_functional_present,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_present.rds"
+)
 
 loo(model_beta_plants_functional_present)
 
@@ -1398,6 +1458,12 @@ model_beta_birds_taxonomic_present_null <- brm(
 
 model_beta_birds_taxonomic_present_null <- add_criterion(model_beta_birds_taxonomic_present_null, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_taxonomic_present_null,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_present_null.rds"
+)
+
+
 # Assess model validity using LOO
 loo(model_beta_birds_taxonomic_present_null)
 
@@ -1423,6 +1489,11 @@ model_beta_birds_taxonomic_present <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_taxonomic_present <- add_criterion(model_beta_birds_taxonomic_present, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_taxonomic_present,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_present.rds"
+)
 
 loo(model_beta_birds_taxonomic_present)
 
@@ -1574,6 +1645,12 @@ model_beta_birds_functional_present_null <- brm(
 
 model_beta_birds_functional_present_null <- add_criterion(model_beta_birds_functional_present_null, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_functional_present_null,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_present_null.rds"
+)
+
+
 # Assess model validity using LOO
 loo(model_beta_birds_functional_present_null)
 
@@ -1599,6 +1676,11 @@ model_beta_birds_functional_present <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_functional_present <- add_criterion(model_beta_birds_functional_present, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_functional_present,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_present.rds"
+)
 
 loo(model_beta_birds_functional_present)
 
@@ -1780,6 +1862,10 @@ model_beta_corals_taxonomic_past_null_gp2 <- brm(
 
 model_beta_corals_taxonomic_past_null_gp2 <- add_criterion(model_beta_corals_taxonomic_past_null_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_taxonomic_past_null_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_past_null_gp2.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_taxonomic_past_null_gp2)
@@ -1804,6 +1890,10 @@ model_beta_corals_taxonomic_past_bayes_all <- brm(
 # Add Leave One Out cross validation criterion
 model_beta_corals_taxonomic_past_bayes_all <- add_criterion(model_beta_corals_taxonomic_past_bayes_all, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_taxonomic_past_bayes_all,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_past_bayes_all.rds"
+)
 
 #Look at model summary its on 'logit' scale, because of bernouli family link function
 model_beta_corals_taxonomic_past_bayes_all
@@ -1985,6 +2075,10 @@ model_beta_corals_functional_past_null_gp2 <- brm(
 
 model_beta_corals_functional_past_null_gp2 <- add_criterion(model_beta_corals_functional_past_null_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_functional_past_null_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_past_null_gp2.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_past_null_gp2)
@@ -2008,6 +2102,11 @@ model_beta_corals_functional_past_bayes_all <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_corals_functional_past_bayes_all <- add_criterion(model_beta_corals_functional_past_bayes_all, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_corals_functional_past_bayes_all,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_past_bayes_all.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_past_bayes_all)
@@ -2198,6 +2297,11 @@ model_beta_fish_taxonomic_past_null_gp2 <- brm(
 
 model_beta_fish_taxonomic_past_null_gp2 <- add_criterion(model_beta_fish_taxonomic_past_null_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_taxonomic_past_null_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_past_null_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_taxonomic_past_null_gp2)
 
@@ -2224,6 +2328,11 @@ model_beta_fish_taxonomic_past_bayes_all <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_fish_taxonomic_past_bayes_all <- add_criterion(model_beta_fish_taxonomic_past_bayes_all, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_fish_taxonomic_past_bayes_all,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_past_bayes_all.rds"
+)
 
 model_beta_fish_taxonomic_past_bayes_all
 
@@ -2399,6 +2508,12 @@ model_beta_fish_functional_past_null_gp2 <- brm(
 
 model_beta_fish_functional_past_null_gp2 <- add_criterion(model_beta_fish_functional_past_null_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_functional_past_null_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_past_null_gp2.rds"
+)
+
+
 # Assess model validity using LOO
 loo(model_beta_fish_functional_past_null_gp2)
 
@@ -2421,10 +2536,13 @@ model_beta_fish_functional_past_bayes_all <- brm(
 )
 
 
-
 # Add Leave One Out cross validation criterion
 model_beta_fish_functional_past_bayes_all <- add_criterion(model_beta_fish_functional_past_bayes_all, "loo", save_psis = TRUE, reloo = T, moment_match = TRUE)
 
+saveRDS(
+  model_beta_fish_functional_past_bayes_all,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_past_bayes_all.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_fish_functional_past_bayes_all)
@@ -2622,6 +2740,11 @@ model_beta_plants_taxonomic_past_null<- brm(
 
 model_beta_plants_taxonomic_past_null<- add_criterion(model_beta_plants_taxonomic_past_null, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_taxonomic_past_null,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_past_null.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_taxonomic_past_null)
 
@@ -2647,6 +2770,11 @@ model_beta_plants_taxonomic_past <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_taxonomic_past <- add_criterion(model_beta_plants_taxonomic_past, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_taxonomic_past,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_past.rds"
+)
 
 loo(model_beta_plants_taxonomic_past)
 
@@ -2796,6 +2924,11 @@ model_beta_plants_functional_past_null<- brm(
 
 model_beta_plants_functional_past_null<- add_criterion(model_beta_plants_functional_past_null, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_functional_past_null,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_past_null.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_functional_past_null)
 
@@ -2821,6 +2954,11 @@ model_beta_plants_functional_past <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_functional_past <- add_criterion(model_beta_plants_functional_past, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_functional_past,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_past.rds"
+)
 
 loo(model_beta_plants_functional_past)
 
@@ -2969,9 +3107,13 @@ model_beta_birds_taxonomic_past_null <- brm(
 
 model_beta_birds_taxonomic_past_null <- add_criterion(model_beta_birds_taxonomic_past_null, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_taxonomic_past_null,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_past_null.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_birds_taxonomic_past_null)
-
 
 
 # past
@@ -2994,6 +3136,12 @@ model_beta_birds_taxonomic_past <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_taxonomic_past <- add_criterion(model_beta_birds_taxonomic_past, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_taxonomic_past,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_past.rds"
+)
+
 
 loo(model_beta_birds_taxonomic_past)
 
@@ -3145,9 +3293,13 @@ model_beta_birds_functional_past_null <- brm(
 
 model_beta_birds_functional_past_null <- add_criterion(model_beta_birds_functional_past_null, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_functional_past_null,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_past_null.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_birds_functional_past_null)
-
 
 
 # past
@@ -3170,6 +3322,11 @@ model_beta_birds_functional_past <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_functional_past <- add_criterion(model_beta_birds_functional_past, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_functional_past,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_past.rds"
+)
 
 loo(model_beta_birds_functional_past)
 
@@ -3358,6 +3515,11 @@ model_beta_corals_taxonomic_present_null_gp2 <- brm(
 
 model_beta_corals_taxonomic_present_null_gp2 <- add_criterion(model_beta_corals_taxonomic_present_null_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_taxonomic_present_null_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_present_null_gp2.rds"
+)
+
 
 # Assess model validity using LOO
 loo(model_beta_corals_taxonomic_present_null_gp2)
@@ -3383,6 +3545,11 @@ model_beta_corals_taxonomic_present_bayes_nest <- brm(
 model_beta_corals_taxonomic_present_bayes_nest <- add_criterion(model_beta_corals_taxonomic_present_bayes_nest, "loo", save_psis = TRUE, reloo = T)
 
 model_beta_corals_taxonomic_present_bayes_nest
+
+saveRDS(
+  model_beta_corals_taxonomic_present_bayes_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_present_bayes_nest.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_taxonomic_present_bayes_nest)
@@ -3564,6 +3731,10 @@ model_beta_corals_functional_present_null_nest_gp2 <- brm(
 
 model_beta_corals_functional_present_null_nest_gp2 <- add_criterion(model_beta_corals_functional_present_null_nest_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_functional_present_null_nest_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_present_null_nest_gp2.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_present_null_nest_gp2)
@@ -3587,6 +3758,11 @@ model_beta_corals_functional_present_bayes_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_corals_functional_present_bayes_nest <- add_criterion(model_beta_corals_functional_present_bayes_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_corals_functional_present_bayes_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_present_bayes_nest.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_present_bayes_nest)
@@ -3778,6 +3954,11 @@ model_beta_fish_taxonomic_present_null_nest_gp2 <- brm(
 
 model_beta_fish_taxonomic_present_null_nest_gp2 <- add_criterion(model_beta_fish_taxonomic_present_null_nest_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_taxonomic_present_null_nest_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_present_null_nest_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_taxonomic_present_null_nest_gp2)
 
@@ -3804,6 +3985,11 @@ model_beta_fish_taxonomic_present_bayes_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_fish_taxonomic_present_bayes_nest <- add_criterion(model_beta_fish_taxonomic_present_bayes_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_fish_taxonomic_present_bayes_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_present_bayes_nest.rds"
+)
 
 model_beta_fish_taxonomic_present_bayes_nest
 
@@ -3978,6 +4164,11 @@ model_beta_fish_functional_present_null_nest_gp2 <- brm(
 
 model_beta_fish_functional_present_null_nest_gp2 <- add_criterion(model_beta_fish_functional_present_null_nest_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_functional_present_null_nest_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_present_null_nest_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_functional_present_null_nest_gp2)
 
@@ -4004,6 +4195,10 @@ model_beta_fish_functional_present_bayes_nest <- brm(
 # Add Leave One Out cross validation criterion
 model_beta_fish_functional_present_bayes_nest <- add_criterion(model_beta_fish_functional_present_bayes_nest, "loo", save_psis = TRUE, reloo = T, moment_match = TRUE)
 
+saveRDS(
+  model_beta_fish_functional_present_bayes_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_present_bayes_nest.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_fish_functional_present_bayes_nest)
@@ -4195,6 +4390,11 @@ model_beta_plants_taxonomic_present_nest_null_nest <- brm(
 
 model_beta_plants_taxonomic_present_nest_null_nest <- add_criterion(model_beta_plants_taxonomic_present_nest_null_nest, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_taxonomic_present_nest_null_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_present_nest_null_nest.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_taxonomic_present_nest_null_nest)
 
@@ -4220,6 +4420,11 @@ model_beta_plants_taxonomic_present_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_taxonomic_present_nest <- add_criterion(model_beta_plants_taxonomic_present_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_taxonomic_present_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_present_nest.rds"
+)
 
 loo(model_beta_plants_taxonomic_present_nest)
 
@@ -4369,6 +4574,11 @@ model_beta_plants_functional_present_null_nest <- brm(
 
 model_beta_plants_functional_present_null_nest <- add_criterion(model_beta_plants_functional_present_null_nest, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_functional_present_null_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_present_null_nest.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_functional_present_null_nest)
 
@@ -4394,6 +4604,11 @@ model_beta_plants_functional_present_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_functional_present_nest <- add_criterion(model_beta_plants_functional_present_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_functional_present_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_present_nest.rds"
+)
 
 loo(model_beta_plants_functional_present_nest)
 
@@ -4544,6 +4759,11 @@ model_beta_birds_taxonomic_present_null_nest <- brm(
 
 model_beta_birds_taxonomic_present_null_nest <- add_criterion(model_beta_birds_taxonomic_present_null_nest, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_taxonomic_present_null_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_present_null_nest.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_birds_taxonomic_present_null_nest)
 
@@ -4569,6 +4789,11 @@ model_beta_birds_taxonomic_present_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_taxonomic_present_nest <- add_criterion(model_beta_birds_taxonomic_present_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_taxonomic_present_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_present_nest.rds"
+)
 
 loo(model_beta_birds_taxonomic_present_nest)
 
@@ -4719,6 +4944,12 @@ model_beta_birds_functional_present_null_nest <- brm(
 
 model_beta_birds_functional_present_null_nest <- add_criterion(model_beta_birds_functional_present_null_nest, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_functional_present_null_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_present_null_nest.rds"
+)
+
+
 # Assess model validity using LOO
 loo(model_beta_birds_functional_present_null_nest)
 
@@ -4744,6 +4975,12 @@ model_beta_birds_functional_present_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_functional_present_nest <- add_criterion(model_beta_birds_functional_present_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_functional_present_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_present_nest.rds"
+)
+
 
 loo(model_beta_birds_functional_present_nest)
 
@@ -4926,6 +5163,11 @@ model_beta_corals_taxonomic_past_null_nest_gp2 <- brm(
 
 model_beta_corals_taxonomic_past_null_nest_gp2 <- add_criterion(model_beta_corals_taxonomic_past_null_nest_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_taxonomic_past_null_nest_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_past_null_nest_gp2.rds"
+)
+
 
 # Assess model validity using LOO
 loo(model_beta_corals_taxonomic_past_null_nest_gp2)
@@ -4950,6 +5192,10 @@ model_beta_corals_taxonomic_past_bayes_nest <- brm(
 # Add Leave One Out cross validation criterion
 model_beta_corals_taxonomic_past_bayes_nest <- add_criterion(model_beta_corals_taxonomic_past_bayes_nest, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_taxonomic_past_bayes_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_past_bayes_nest.rds"
+)
 
 #Look at model summary its on 'logit' scale, because of bernouli family link function
 model_beta_corals_taxonomic_past_bayes_nest
@@ -5126,6 +5372,11 @@ model_beta_corals_functional_past_null_nest_gp2 <- brm(
 
 model_beta_corals_functional_past_null_nest_gp2 <- add_criterion(model_beta_corals_functional_past_null_nest_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_functional_past_null_nest_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_past_null_nest_gp2.rds"
+)
+
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_past_null_nest_gp2)
@@ -5149,6 +5400,11 @@ model_beta_corals_functional_past_bayes_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_corals_functional_past_bayes_nest <- add_criterion(model_beta_corals_functional_past_bayes_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_corals_functional_past_bayes_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_past_bayes_nest.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_past_bayes_nest)
@@ -5338,6 +5594,11 @@ model_beta_fish_taxonomic_past_null_nest_gp2 <- brm(
 
 model_beta_fish_taxonomic_past_null_nest_gp2 <- add_criterion(model_beta_fish_taxonomic_past_null_nest_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_taxonomic_past_null_nest_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_past_null_nest_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_taxonomic_past_null_nest_gp2)
 
@@ -5364,6 +5625,11 @@ model_beta_fish_taxonomic_past_bayes_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_fish_taxonomic_past_bayes_nest <- add_criterion(model_beta_fish_taxonomic_past_bayes_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_fish_taxonomic_past_bayes_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_past_bayes_nest.rds"
+)
 
 model_beta_fish_taxonomic_past_bayes_nest
 
@@ -5535,9 +5801,13 @@ model_beta_fish_functional_past_null_nest_nest_gp2 <- brm(
 
 model_beta_fish_functional_past_null_nest_nest_gp2 <- add_criterion(model_beta_fish_functional_past_null_nest_nest_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_functional_past_null_nest_nest_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_past_null_nest_nest_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_functional_past_null_nest_nest_gp2)
-
 
 
 # past
@@ -5557,9 +5827,14 @@ model_beta_fish_functional_past_bayes_nest <- brm(
 )
 
 
-
 # Add Leave One Out cross validation criterion
 model_beta_fish_functional_past_bayes_nest <- add_criterion(model_beta_fish_functional_past_bayes_nest, "loo", save_psis = TRUE, reloo = T, moment_match = TRUE)
+
+
+saveRDS(
+  model_beta_fish_functional_past_bayes_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_past_bayes_nest.rds"
+)
 
 
 # Assess model validity using LOO
@@ -5755,6 +6030,11 @@ model_beta_plants_taxonomic_past_null_nest <- brm(
 
 model_beta_plants_taxonomic_past_null_nest <- add_criterion(model_beta_plants_taxonomic_past_null_nest, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_taxonomic_past_null_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_past_null_nest.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_taxonomic_past_null_nest)
 
@@ -5780,6 +6060,12 @@ model_beta_plants_taxonomic_past_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_taxonomic_past_nest <- add_criterion(model_beta_plants_taxonomic_past_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_taxonomic_past_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_past_nest.rds"
+)
+
 
 loo(model_beta_plants_taxonomic_past_nest)
 
@@ -5929,6 +6215,11 @@ model_beta_plants_functional_past_null_nest <- brm(
 
 model_beta_plants_functional_past_null_nest <- add_criterion(model_beta_plants_functional_past_null_nest, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_functional_past_null_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_past_null_nest.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_functional_past_null_nest)
 
@@ -5954,6 +6245,11 @@ model_beta_plants_functional_past_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_functional_past_nest <- add_criterion(model_beta_plants_functional_past_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_functional_past_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_past_nest.rds"
+)
 
 loo(model_beta_plants_functional_past_nest)
 
@@ -6103,9 +6399,14 @@ model_beta_birds_taxonomic_past_null_nest <- brm(
 
 model_beta_birds_taxonomic_past_null_nest <- add_criterion(model_beta_birds_taxonomic_past_null_nest, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_taxonomic_past_null_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_past_null_nest.rds"
+)
+
+
 # Assess model validity using LOO
 loo(model_beta_birds_taxonomic_past_null_nest)
-
 
 
 # past
@@ -6128,6 +6429,11 @@ model_beta_birds_taxonomic_past_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_taxonomic_past_nest <- add_criterion(model_beta_birds_taxonomic_past_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_taxonomic_past_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_past_nest.rds"
+)
 
 loo(model_beta_birds_taxonomic_past_nest)
 
@@ -6276,9 +6582,13 @@ model_beta_birds_functional_past_null_nest <- brm(
 
 model_beta_birds_functional_past_null_nest <- add_criterion(model_beta_birds_functional_past_null_nest, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_functional_past_null_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_past_null_nest.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_birds_functional_past_null_nest)
-
 
 
 # past
@@ -6301,6 +6611,11 @@ model_beta_birds_functional_past_nest <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_functional_past_nest <- add_criterion(model_beta_birds_functional_past_nest, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_functional_past_nest,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_past_nest.rds"
+)
 
 loo(model_beta_birds_functional_past_nest)
 
@@ -6487,6 +6802,10 @@ model_beta_corals_taxonomic_present_null_turn <- brm(
 
 model_beta_corals_taxonomic_present_null_turn <- add_criterion(model_beta_corals_taxonomic_present_null_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_taxonomic_present_null_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_present_null_turn.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_taxonomic_present_null_turn)
@@ -6510,6 +6829,11 @@ model_beta_corals_taxonomic_present_bayes_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_corals_taxonomic_present_bayes_turn <- add_criterion(model_beta_corals_taxonomic_present_bayes_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_corals_taxonomic_present_bayes_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_present_bayes_turn.rds"
+)
 
 model_beta_corals_taxonomic_present_bayes_turn
 
@@ -6693,6 +7017,10 @@ model_beta_corals_functional_present_null_turn_gp2 <- brm(
 
 model_beta_corals_functional_present_null_turn_gp2 <- add_criterion(model_beta_corals_functional_present_null_turn_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_functional_present_null_turn_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_present_null_turn_gp2.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_present_null_turn_gp2)
@@ -6909,6 +7237,11 @@ model_beta_fish_taxonomic_present_null_turn_gp2 <- brm(
 
 model_beta_fish_taxonomic_present_null_turn_gp2 <- add_criterion(model_beta_fish_taxonomic_present_null_turn_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_taxonomic_present_null_turn_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_present_null_turn_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_taxonomic_present_null_turn_gp2)
 
@@ -6935,6 +7268,11 @@ model_beta_fish_taxonomic_present_bayes_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_fish_taxonomic_present_bayes_turn <- add_criterion(model_beta_fish_taxonomic_present_bayes_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_fish_taxonomic_present_bayes_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_present_bayes_turn.rds"
+)
 
 model_beta_fish_taxonomic_present_bayes_turn
 
@@ -7109,9 +7447,13 @@ model_beta_fish_functional_present_null_turn_gp2 <- brm(
 
 model_beta_fish_functional_present_null_turn_gp2 <- add_criterion(model_beta_fish_functional_present_null_turn_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_functional_present_null_turn_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_present_null_turn_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_functional_present_null_turn_gp2)
-
 
 
 # Present
@@ -7131,10 +7473,13 @@ model_beta_fish_functional_present_bayes_turn <- brm(
 )
 
 
-
 # Add Leave One Out cross validation criterion
 model_beta_fish_functional_present_bayes_turn <- add_criterion(model_beta_fish_functional_present_bayes_turn, "loo", save_psis = TRUE, reloo = T, moment_match = TRUE)
 
+saveRDS(
+  model_beta_fish_functional_present_bayes_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_present_bayes_turn.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_fish_functional_present_bayes_turn)
@@ -7331,6 +7676,11 @@ model_beta_plants_taxonomic_present_turn_null_turn <- brm(
 
 model_beta_plants_taxonomic_present_turn_null_turn <- add_criterion(model_beta_plants_taxonomic_present_turn_null_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_taxonomic_present_turn_null_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_present_turn_null_turn.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_taxonomic_present_turn_null_turn)
 
@@ -7356,6 +7706,11 @@ model_beta_plants_taxonomic_present_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_taxonomic_present_turn <- add_criterion(model_beta_plants_taxonomic_present_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_taxonomic_present_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_present_turn.rds"
+)
 
 loo(model_beta_plants_taxonomic_present_turn)
 
@@ -7505,6 +7860,11 @@ model_beta_plants_functional_present_null_turn <- brm(
 
 model_beta_plants_functional_present_null_turn <- add_criterion(model_beta_plants_functional_present_null_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_functional_present_null_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_present_null_turn.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_functional_present_null_turn)
 
@@ -7530,6 +7890,11 @@ model_beta_plants_functional_present_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_functional_present_turn <- add_criterion(model_beta_plants_functional_present_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_functional_present_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_present_turn.rds"
+)
 
 loo(model_beta_plants_functional_present)
 
@@ -7678,6 +8043,11 @@ model_beta_birds_taxonomic_present_null_turn <- brm(
 
 model_beta_birds_taxonomic_present_null_turn <- add_criterion(model_beta_birds_taxonomic_present_null_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_taxonomic_present_null_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_present_null_turn.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_birds_taxonomic_present_null_turn)
 
@@ -7703,6 +8073,11 @@ model_beta_birds_taxonomic_present_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_taxonomic_present_turn <- add_criterion(model_beta_birds_taxonomic_present_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_taxonomic_present_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_present_turn.rds"
+)
 
 loo(model_beta_birds_taxonomic_present_turn)
 
@@ -7851,6 +8226,11 @@ model_beta_birds_functional_present_null_turn <- brm(
 
 model_beta_birds_functional_present_null_turn <- add_criterion(model_beta_birds_functional_present_null_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_functional_present_null_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_present_null_turn.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_birds_functional_present_null_turn)
 
@@ -7876,6 +8256,11 @@ model_beta_birds_functional_present_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_functional_present_turn <- add_criterion(model_beta_birds_functional_present_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_functional_present_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_present_turn.rds"
+)
 
 loo(model_beta_birds_functional_present_turn)
 
@@ -8042,6 +8427,10 @@ model_beta_corals_taxonomic_past_null_turn_gp2 <- brm(
 
 model_beta_corals_taxonomic_past_null_turn_gp2 <- add_criterion(model_beta_corals_taxonomic_past_null_turn_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_taxonomic_past_null_turn_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_past_null_turn_gp2.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_taxonomic_past_null_turn_gp2)
@@ -8066,6 +8455,10 @@ model_beta_corals_taxonomic_past_bayes_turn <- brm(
 # Add Leave One Out cross validation criterion
 model_beta_corals_taxonomic_past_bayes_turn <- add_criterion(model_beta_corals_taxonomic_past_bayes_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_taxonomic_past_bayes_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_taxonomic_past_bayes_turn.rds"
+)
 
 #Look at model summary its on 'logit' scale, because of bernouli family link function
 model_beta_corals_taxonomic_past_bayes_turn
@@ -8244,6 +8637,10 @@ model_beta_corals_functional_past_null_turn_gp2 <- brm(
 
 model_beta_corals_functional_past_null_turn_gp2 <- add_criterion(model_beta_corals_functional_past_null_turn_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_corals_functional_past_null_turn_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_past_null_turn_gp2.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_past_null_turn_gp2)
@@ -8267,6 +8664,11 @@ model_beta_corals_functional_past_bayes_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_corals_functional_past_bayes_turn <- add_criterion(model_beta_corals_functional_past_bayes_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_corals_functional_past_bayes_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_corals_functional_past_bayes_turn.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_corals_functional_past_bayes_turn)
@@ -8458,6 +8860,12 @@ model_beta_fish_taxonomic_past_null_turn_gp2 <- brm(
 
 model_beta_fish_taxonomic_past_null_turn_gp2 <- add_criterion(model_beta_fish_taxonomic_past_null_turn_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_taxonomic_past_null_turn_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_past_null_turn_gp2.rds"
+)
+
+
 # Assess model validity using LOO
 loo(model_beta_fish_taxonomic_past_null_turn_gp2)
 
@@ -8486,6 +8894,11 @@ model_beta_fish_taxonomic_past_bayes_turn <- brm(
 model_beta_fish_taxonomic_past_bayes_turn <- add_criterion(model_beta_fish_taxonomic_past_bayes_turn, "loo", save_psis = TRUE, reloo = T)
 
 model_beta_fish_taxonomic_past_bayes_turn
+
+saveRDS(
+  model_beta_fish_taxonomic_past_bayes_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_past_bayes_turn.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_fish_taxonomic_past_bayes_turn)
@@ -8655,9 +9068,13 @@ model_beta_fish_functional_past_null_turn_gp2 <- brm(
 
 model_beta_fish_functional_past_null_turn_gp2 <- add_criterion(model_beta_fish_functional_past_null_turn_gp2, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_fish_functional_past_null_turn_gp2,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_past_null_turn_gp2.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_fish_functional_past_null_turn_gp2)
-
 
 
 # past
@@ -8681,6 +9098,10 @@ model_beta_fish_functional_past_bayes_turn <- brm(
 # Add Leave One Out cross validation criterion
 model_beta_fish_functional_past_bayes_turn <- add_criterion(model_beta_fish_functional_past_bayes_turn, "loo", save_psis = TRUE, reloo = T, moment_match = TRUE)
 
+saveRDS(
+  model_beta_fish_functional_past_bayes_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_functional_past_bayes_turn.rds"
+)
 
 # Assess model validity using LOO
 loo(model_beta_fish_functional_past_bayes_turn)
@@ -8874,9 +9295,13 @@ model_beta_plants_taxonomic_past_null_turn <- brm(
 
 model_beta_plants_taxonomic_past_null_turn <- add_criterion(model_beta_plants_taxonomic_past_null_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_taxonomic_past_null_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_past_null_turn.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_taxonomic_past_null_turn)
-
 
 
 # past
@@ -8899,6 +9324,12 @@ model_beta_plants_taxonomic_past_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_taxonomic_past_turn <- add_criterion(model_beta_plants_taxonomic_past_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_taxonomic_past_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_taxonomic_past_turn.rds"
+)
+
 
 loo(model_beta_plants_taxonomic_past_turn)
 
@@ -9048,6 +9479,11 @@ model_beta_plants_functional_past_null_turn <- brm(
 
 model_beta_plants_functional_past_null_turn <- add_criterion(model_beta_plants_functional_past_null_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_plants_functional_past_null_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_past_null_turn.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_plants_functional_past_null_turn)
 
@@ -9073,6 +9509,11 @@ model_beta_plants_functional_past_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_plants_functional_past_turn <- add_criterion(model_beta_plants_functional_past_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_plants_functional_past_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_past_turn.rds"
+)
 
 loo(model_beta_plants_functional_past_turn)
 
@@ -9223,6 +9664,12 @@ model_beta_birds_taxonomic_past_null_turn <- brm(
 
 model_beta_birds_taxonomic_past_null_turn <- add_criterion(model_beta_birds_taxonomic_past_null_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_taxonomic_past_null_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_past_null_turn.rds"
+)
+
+
 # Assess model validity using LOO
 loo(model_beta_birds_taxonomic_past_null_turn)
 
@@ -9248,6 +9695,12 @@ model_beta_birds_taxonomic_past_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_taxonomic_past_turn <- add_criterion(model_beta_birds_taxonomic_past_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_taxonomic_past_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_taxonomic_past_turn.rds"
+)
+
 
 loo(model_beta_birds_taxonomic_past_turn)
 
@@ -9401,6 +9854,11 @@ model_beta_birds_functional_past_null_turn <- brm(
 
 model_beta_birds_functional_past_null_turn <- add_criterion(model_beta_birds_functional_past_null_turn, "loo", save_psis = TRUE, reloo = T)
 
+saveRDS(
+  model_beta_birds_functional_past_null_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_past_null_turn.rds"
+)
+
 # Assess model validity using LOO
 loo(model_beta_birds_functional_past_null_turn)
 
@@ -9426,6 +9884,12 @@ model_beta_birds_functional_past_turn <- brm(
 
 # Add Leave One Out cross validation criterion
 model_beta_birds_functional_past_turn <- add_criterion(model_beta_birds_functional_past_turn, "loo", save_psis = TRUE, reloo = T)
+
+saveRDS(
+  model_beta_birds_functional_past_turn,
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_birds_functional_past_turn.rds"
+)
+
 
 loo(model_beta_birds_functional_past_turn)
 
