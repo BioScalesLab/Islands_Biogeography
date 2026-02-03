@@ -2221,12 +2221,12 @@ p4 <- corals_functional %>%
 p5 <- corals_functional %>% 
   modelr::data_grid(
     diff_past_isolation_sc = mean(diff_past_isolation_sc),
-    diff_reef_area_sc = mean(diff_reef_area_sc),
+    diff_past_reef_area_sc = mean(diff_past_reef_area_sc),
     dist_sc = mean(dist_sc),
     diff_age_sc = mean(diff_age_sc),
     diff_past_sst = seq_range(diff_past_sst, n = 10)
   ) %>% 
-  add_epred_draws(model_beta_corals_functional_present_bayes_all,
+  add_epred_draws(model_beta_corals_functional_past_bayes_all,
                   re_formula = NA, ndraws = 500) %>% 
   unique %>% 
   ggplot(aes(y = .epred, x = diff_past_sst)) +
@@ -3555,7 +3555,7 @@ saveRDS(
 loo(model_beta_corals_taxonomic_present_bayes_nest)
 
 #Look at model summary its on 'logit' scale, because of bernouli family link function
-model_beta_corals_taxonomic_present_bayes_2
+#model_beta_corals_taxonomic_present_bayes_2
 
 #loo_compare(model_beta_corals_taxonomic_present_bayes_nest, model_beta_corals_taxonomic_present_null_gp2)
 ## Model checks ####
@@ -5750,7 +5750,7 @@ p5 <- fish_taxonomic %>%
   add_epred_draws(model_beta_fish_taxonomic_past_bayes_nest,
                   re_formula = NA, ndraws = 500) %>% 
   unique %>% 
-  ggplot(aes(y = .epred, x = diff_present_sst)) +
+  ggplot(aes(y = .epred, x = diff_past_sst)) +
   geom_line(aes(group = .draw), alpha = .08) +
   theme_tidybayes() +
   coord_cartesian(ylim = c(0,1)) +
@@ -7492,12 +7492,12 @@ loo(model_beta_fish_functional_present_bayes_turn)
 pp_check(model_beta_fish_functional_present_bayes_turn , ndraws = 50) 
 pp_check(model_beta_fish_functional_present_bayes_turn, type = "ecdf_overlay", ndraws = 50) 
 pp_check(model_beta_fish_functional_present_bayes_turn , ndraws = 50, type = "dens_overlay_grouped", group = "Group1")
-pp_check(model_beta_fish_functional_present_bayes_turn_g , ndraws = 50, type = "scatter_avg_grouped", group = "Group1")
-pp_check(model_beta_fish_functional_present_bayes_turn_g , ndraws = 50, type = "error_scatter_avg_grouped", group = "Group1")
-pp_check(model_beta_fish_functional_present_bayes_turn_g, type='pit_ecdf_grouped', group = "Group1", prob = 0.95, plot_diff = F)
-pp_check(model_beta_fish_functional_present_bayes_turn_g, type='pit_ecdf_grouped', group = "Group2", prob = 0.95, plot_diff = F)
-
-pp_check(model_beta_fish_functional_present_bayes_turn_g , ndraws = 50, type = "scatter_avg_grouped", group = "Group2")
+# pp_check(model_beta_fish_functional_present_bayes_turn_g , ndraws = 50, type = "scatter_avg_grouped", group = "Group1")
+# pp_check(model_beta_fish_functional_present_bayes_turn_g , ndraws = 50, type = "error_scatter_avg_grouped", group = "Group1")
+# pp_check(model_beta_fish_functional_present_bayes_turn_g, type='pit_ecdf_grouped', group = "Group1", prob = 0.95, plot_diff = F)
+# pp_check(model_beta_fish_functional_present_bayes_turn_g, type='pit_ecdf_grouped', group = "Group2", prob = 0.95, plot_diff = F)
+# 
+# pp_check(model_beta_fish_functional_present_bayes_turn_g , ndraws = 50, type = "scatter_avg_grouped", group = "Group2")
 
 #pairs(model_beta_fish_functional_present_bayes_turn_g, variable = variables(model_beta_fish_functional_present_bayes_turn_g)[1:5])
 #fish_functional %>% select(Group1, Group2) %>% unique %>% view
@@ -7896,7 +7896,7 @@ saveRDS(
   "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_plants_functional_present_turn.rds"
 )
 
-loo(model_beta_plants_functional_present)
+loo(model_beta_plants_functional_present_turn)
 
 #loo_compare(model_beta_plants_functional_present_turn, model_beta_plants_functional_present)
 
