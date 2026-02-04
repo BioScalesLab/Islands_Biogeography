@@ -11,7 +11,9 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(tidybayes)
-library (vegan) # test
+library(stringr)
+library(patchwork)
+
 
 
 #1. Corals Taxonomic - Past and Pres ----
@@ -123,10 +125,10 @@ ggplot(
   )
 
 
-
 ##
 
 corals_taxonomic_past + corals_taxonomic_pres + plot_layout(ncol = 2)
+
 
 
 
