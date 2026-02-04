@@ -348,9 +348,9 @@ ggplot(
   )
 
 
-## X axis between -2 and 2
+## X axis between -1 and 1.5
 
-ggplot(
+marine_tax_plot <- ggplot(
   filter(post_all, parameter != "Intercept"),
   aes(x = value, fill = taxon)
 ) +
@@ -358,7 +358,7 @@ ggplot(
   facet_grid(parameter + taxon ~ time + facet, scales = "free_x") +
   geom_vline(xintercept = 0, linetype = "dashed", inherit.aes = FALSE) +
   scale_fill_manual(values = c("Corals" = "#2364aa", "Fish" = "#a9d3ff")) +
-  scale_x_continuous(limits = c(-2, 1)) +
+  scale_x_continuous(limits = c(-1, 1.5)) +
   theme_minimal() +
   theme(
     legend.position = "none",
@@ -371,10 +371,25 @@ ggplot(
     title = "Taxonomic beta diversity – Corals vs Fish"
   )
 
+# Saving image and creating 'Output' folder
+
+if (!dir.exists("Output")) {
+  dir.create("Output")
+}
+
+#
+ggsave(
+  filename = "Output/marine_tax_plot.pdf",
+  plot = marine_plot,
+  device = "pdf",
+  width = 12,
+  height = 8
+)
+
 
 ## WITHOUT ARCH DIST
 
-ggplot(
+marine_tax_plot_without_ArchDis <- ggplot(
   filter(post_all, parameter != "Intercept", parameter != "dist_sc"),
   aes(x = value, fill = taxon)
 ) +
@@ -393,6 +408,18 @@ ggplot(
     y = "Density",
     title = "Taxonomic beta diversity – Corals vs Fish (sem dist_sc)"
   )
+
+
+
+#
+ggsave(
+  filename = "Output/marine_tax_plot_without_ArchDis.pdf",
+  plot = marine_plot,
+  device = "pdf",
+  width = 12,
+  height = 8
+)
+
 
 
 #4. Corals Functional - Past and Pres ----
@@ -729,7 +756,7 @@ ggplot(
 
 ## WITHOUT ARCH DIST
 
-ggplot(
+marine_func_plot_without_ArchDis.pdf <- ggplot(
   filter(post_all, parameter != "Intercept", parameter != "dist_sc"),
   aes(x = value, fill = taxon)
 ) +
@@ -750,9 +777,19 @@ ggplot(
   )
 
 
-## X axis between -2 and 2
+#
+ggsave(
+  filename = "Output/marine_func_plot_without_ArchDis.pdf",
+  plot = marine_plot,
+  device = "pdf",
+  width = 12,
+  height = 8
+)
 
-ggplot(
+
+## X axis between -1 and 1.5
+
+marine_func_plot <- ggplot(
   filter(post_all, parameter != "Intercept"),
   aes(x = value, fill = taxon)
 ) +
@@ -773,6 +810,15 @@ ggplot(
     title = "Functional beta diversity – Corals vs Fish"
   )
 
+
+#
+ggsave(
+  filename = "Output/marine_func_plot.pdf",
+  plot = marine_plot,
+  device = "pdf",
+  width = 12,
+  height = 8
+)
 
 
 
@@ -1074,7 +1120,7 @@ post_all <- bind_rows(
   )
 
 ##
-ggplot(
+terrestrial_tax_plot <- ggplot(
   filter(post_all, parameter != "Intercept"),
   aes(x = value, fill = taxon)
 ) +
@@ -1094,6 +1140,16 @@ ggplot(
     title = "taxonomic beta diversity – Plants vs Birds"
   )
 
+
+
+#
+ggsave(
+  filename = "Output/terrestrial_tax_plot.pdf",
+  plot = marine_plot,
+  device = "pdf",
+  width = 12,
+  height = 8
+)
 
 
 #10. Plants Functional - Past and Pres ----
@@ -1394,7 +1450,7 @@ post_all <- bind_rows(
   )
 
 ##
-ggplot(
+terrestrial_func_plot <- ggplot(
   filter(post_all, parameter != "Intercept"),
   aes(x = value, fill = taxon)
 ) +
@@ -1413,4 +1469,13 @@ ggplot(
     y = "Density",
     title = "Functional beta diversity – Plants vs Birds"
   )
+
+
+ggsave(
+  filename = "Output/terrestrial_func_plot.pdf",
+  plot = marine_plot,
+  device = "pdf",
+  width = 12,
+  height = 8
+)
 
