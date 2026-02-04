@@ -657,7 +657,7 @@ model_beta_fish_taxonomic_present_bayes_all <- add_criterion(model_beta_fish_tax
 
 saveRDS(
   model_beta_fish_taxonomic_present_bayes_all,
-  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_present_bayes_all"
+  "/home/student/Documents/Luiza/Islands_Biogeography/Inter_Data/model_beta_fish_taxonomic_present_bayes_all.rds"
 )
 
 model_beta_fish_taxonomic_present_bayes_all
