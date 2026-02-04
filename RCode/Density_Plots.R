@@ -756,7 +756,7 @@ ggplot(
 
 ## WITHOUT ARCH DIST
 
-marine_func_plot_without_ArchDis.pdf <- ggplot(
+marine_func_plot_without_ArchDis <- ggplot(
   filter(post_all, parameter != "Intercept", parameter != "dist_sc"),
   aes(x = value, fill = taxon)
 ) +
@@ -773,7 +773,7 @@ marine_func_plot_without_ArchDis.pdf <- ggplot(
   labs(
     x = "Posterior estimate",
     y = "Density",
-    title = "Taxonomic beta diversity – Corals vs Fish (sem dist_sc)"
+    title = "Functional beta diversity – Corals vs Fish (sem dist_sc)"
   )
 
 
@@ -797,7 +797,7 @@ marine_func_plot <- ggplot(
   facet_grid(parameter + taxon ~ time + facet, scales = "free_x") +
   geom_vline(xintercept = 0, linetype = "dashed", inherit.aes = FALSE) +
   scale_fill_manual(values = c("Corals" = "#2364aa", "Fish" = "#a9d3ff")) +
-  scale_x_continuous(limits = c(-2, 1)) +
+  scale_x_continuous(limits = c(-1, 1.5)) +
   theme_minimal() +
   theme(
     legend.position = "none",
