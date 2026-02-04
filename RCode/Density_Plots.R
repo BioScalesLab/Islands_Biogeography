@@ -380,7 +380,7 @@ if (!dir.exists("Output")) {
 #
 ggsave(
   filename = "Output/marine_tax_plot.pdf",
-  plot = marine_plot,
+  plot = marine_tax_plot,
   device = "pdf",
   width = 12,
   height = 8
@@ -414,7 +414,7 @@ marine_tax_plot_without_ArchDis <- ggplot(
 #
 ggsave(
   filename = "Output/marine_tax_plot_without_ArchDis.pdf",
-  plot = marine_plot,
+  plot = marine_tax_plot_without_ArchDis,
   device = "pdf",
   width = 12,
   height = 8
@@ -780,7 +780,7 @@ marine_func_plot_without_ArchDis.pdf <- ggplot(
 #
 ggsave(
   filename = "Output/marine_func_plot_without_ArchDis.pdf",
-  plot = marine_plot,
+  plot = marine_func_plot_without_ArchDis.pdf,
   device = "pdf",
   width = 12,
   height = 8
@@ -814,7 +814,7 @@ marine_func_plot <- ggplot(
 #
 ggsave(
   filename = "Output/marine_func_plot.pdf",
-  plot = marine_plot,
+  plot = marine_func_plot,
   device = "pdf",
   width = 12,
   height = 8
@@ -1145,7 +1145,7 @@ terrestrial_tax_plot <- ggplot(
 #
 ggsave(
   filename = "Output/terrestrial_tax_plot.pdf",
-  plot = marine_plot,
+  plot = terrestrial_tax_plot,
   device = "pdf",
   width = 12,
   height = 8
@@ -1473,7 +1473,7 @@ terrestrial_func_plot <- ggplot(
 
 ggsave(
   filename = "Output/terrestrial_func_plot.pdf",
-  plot = marine_plot,
+  plot = terrestrial_func_plot,
   device = "pdf",
   width = 12,
   height = 8
