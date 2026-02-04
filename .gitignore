@@ -35,6 +35,9 @@ large_*.csv
 *.stan
 *.rds
 
+# Allow final models in INter_Data (tracked via Git LSF)
+!Inter_Data/*.rds
+
 # Intermediate analysis outputs
 outputs/
 temp/
