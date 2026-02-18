@@ -15,19 +15,22 @@ Each ecosystem is analyzed using both **taxonomic** (species composition) and **
 
 ```
 Islands_Biogeography/
-├── Data/                          # Raw and processed datasets
+├── Data/                                # Raw and processed input datasets
 │   ├── Coral data (taxonomic & functional)
 │   ├── Fish data (taxonomic & functional)
 │   ├── Plant data (taxonomic & functional)
 │   └── Bird data (taxonomic & functional)
-├── RCode/                         # R analysis scripts
-│   ├── Island_Betadiversity_models.R    # Main statistical models
-│   ├── Spearman_correlations.R          # Correlation analyses
-│   └── Density_Plots.R                  # Visualization scripts
-├── docs/                          # Documentation
-├── README.md                      # This file
-├── CONTRIBUTING.md                # Contribution guidelines
-└── Islands_Biogeography.Rproj     # RStudio project file
+│
+├── Inter_Data/                          # Intermediate model outputs (.rds files)
+│
+├── Output/                              # Final figures and exported results
+│
+├── RCode/
+│   └── Archipelagos_taxa_models_model2.R   # Main and only analysis script
+│
+├── README.md
+├── CONTRIBUTING.md
+└── Islands_Biogeography.Rproj
 ```
 
 ## Data Files
@@ -39,10 +42,10 @@ Islands_Biogeography/
 - `model_data_fish_functional_arch_VERSION2.csv` - Fish functional diversity data
 
 ### Terrestrial Ecosystems
-- `bird_taxonomic_only_native.csv` - Bird taxonomic diversity data
-- `bird_functional_only_native.csv` - Bird functional diversity data
-- `plant_taxonomic_only_native_final.csv` - Plant taxonomic diversity data
-- `plant_functional_only_native_final.csv` - Plant functional diversity data
+- `model_data_birds_taxonomic_arch.csv` - Bird taxonomic diversity data
+- `model_data_birds_functional_arch.csv` - Bird functional diversity data
+- `model_data_plants_taxonomic_arch.csv` - Plant taxonomic diversity data
+- `model_data_plants_taxonomic_arch.csv` - Plant functional diversity data
 
 ## Requirements
 
