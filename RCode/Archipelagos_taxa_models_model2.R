@@ -2063,7 +2063,7 @@ ggplot(all_taxonomic,
     slab_color = NA
   ) +
   geom_vline(xintercept = 0, linetype = "dashed") +
-  coord_cartesian(xlim = c(-2.5, 2.5)) +
+  coord_cartesian(xlim = c(-2.5, 3.6)) +
   facet_grid(Variable ~ Time + Component, scales = "free_x") +
   theme_minimal() +
   theme(
