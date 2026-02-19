@@ -215,7 +215,7 @@ mod_tax_bayes_model2 <- add_criterion(mod_tax_bayes_model2, "loo", save_psis = T
 
 saveRDS(
   mod_tax_bayes_model2,
-  "/home/student/Documents/Luiza/New models/Inter_Data/model_beta_all_taxonomic_nest_present.rds"
+  "/home/student/Islands_Biogeography/Inter_Data/model_beta_all_taxonomic_nest_present.rds"
 )
 
 
@@ -425,9 +425,9 @@ model_all_tax_scaled <- model_all_tax %>%
 
 epsilon <- 1e-4  # um valor pequeno
 
-model_all_tax_scaled <- model_all_tax_scaled %>%
+model_all_tax_turn_pres_scaled <- model_all_tax_scaled %>%
   mutate(
-    beta_sne_rescaled = beta_sim * (1 - 2 * epsilon) + epsilon
+    beta_sim_rescaled = beta_sim * (1 - 2 * epsilon) + epsilon
   )
 
 
@@ -453,7 +453,7 @@ mod_turn_pres_bayes_model2 <- add_criterion(mod_turn_pres_bayes_model2, "loo", s
 
 saveRDS(
   mod_turn_pres_bayes_model2,
-  "/home/student/Documents/Luiza/New models/Inter_Data/model_beta_alltaxonomic_turn_present.rds"
+  "/home/student/Islands_Biogeography/Inter_Data/model_beta_all_taxonomic_turn_present.rds"
 )
 
 
@@ -672,7 +672,7 @@ model_all_tax_scaled <- model_all_tax %>%
 
 epsilon <- 1e-4  # um valor pequeno
 
-model_all_tax_scaled <- model_all_tax_scaled %>%
+model_all_tax_past_scaled <- model_all_tax_scaled %>%
   mutate(
     beta_sne_rescaled = beta_sne * (1 - 2 * epsilon) + epsilon
   )
@@ -699,7 +699,7 @@ mod_tax_bayes_past_model2 <- add_criterion(mod_tax_bayes_past_model2, "loo", sav
 
 saveRDS(
   mod_tax_bayes_past_model2,
-  "/home/student/Documents/Luiza/New models/Inter_Data/model_beta_all_taxonomic_nest_past.rds"
+  "/home/student/Islands_Biogeography/Inter_Data/model_beta_all_taxonomic_nest_past.rds"
 )
 
 # Assess model validity using LOO
@@ -916,9 +916,9 @@ model_all_tax_scaled <- model_all_tax %>%
 
 epsilon <- 1e-4  # um valor pequeno
 
-model_all_tax_scaled <- model_all_tax_scaled %>%
+model_all_tax_past_sim_scaled <- model_all_tax_scaled %>%
   mutate(
-    beta_sne_rescaled = beta_sim * (1 - 2 * epsilon) + epsilon
+    beta_sim_rescaled = beta_sim * (1 - 2 * epsilon) + epsilon
   )
 
 
@@ -943,7 +943,7 @@ mod_tax_bayes_past_sim_model2 <- add_criterion(mod_tax_bayes_past_sim_model2, "l
 
 saveRDS(
   mod_tax_bayes_past_sim_model2,
-  "/home/student/Documents/Luiza/New models/Inter_Data/model_beta_all_taxonomic_turn_past.rds"
+  "/home/student/Islands_Biogeography/Inter_Data/model_beta_all_taxonomic_turn_past.rds"
 )
 
 # Assess model validity using LOO
@@ -1206,9 +1206,11 @@ plot_tax_turn <- tax_turn_pres +
 
 #### Beta functional NEST PRESENT ----------------------------------------------------
 
-# Corais funcionais
+# Coral
 coral_fun_nest <- model_corals_functional %>%
   mutate(
+    Archipelago1 = Archipelago1.model,
+    Archipelago2 = Archipelago2.model,
     taxa = "Coral",
     dist = Distance,
     area = diff_reef_area,
@@ -1219,9 +1221,11 @@ coral_fun_nest <- model_corals_functional %>%
   ) %>%
   select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 
-# Peixes funcionais
+# Fish
 fish_fun_nest <- model_fish_functional %>%
   mutate(
+    Archipelago1 = Archipelago1,
+    Archipelago2 = Archipelago2,
     taxa = "Fish",
     dist = Distance,
     area = diff_reef_area,
@@ -1232,9 +1236,11 @@ fish_fun_nest <- model_fish_functional %>%
   ) %>%
   select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 
-# Plantas funcionais
+# Plant
 plant_fun_nest <- model_plants_functional %>%
   mutate(
+    Archipelago1 = Archipelago1,
+    Archipelago2 = Archipelago2,
     taxa = "Plant",
     dist = Distance,
     area = diff_present_area,
@@ -1245,9 +1251,11 @@ plant_fun_nest <- model_plants_functional %>%
   ) %>%
   select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 
-# Aves funcionais
+# Bird
 bird_fun_nest <- model_birds_functional %>%
   mutate(
+    Archipelago1 = Archipelago1,
+    Archipelago2 = Archipelago2,
     taxa = "Bird",
     dist = Distance,
     area = diff_present_area,
@@ -1262,18 +1270,52 @@ bird_fun_nest <- model_birds_functional %>%
 model_all_fun_nest <- bind_rows(coral_fun_nest, fish_fun_nest, plant_fun_nest, bird_fun_nest)
 model_all_fun_nest$taxa <- factor(model_all_fun_nest$taxa, levels = c("Coral", "Fish", "Plant", "Bird"))
 
-# Scale variables
-model_all_fun_nest_scaled <- model_all_fun_nest %>%
+# Scaling up variables per ecosystem type
+
+# 0 and 1
+rescale_01 <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+
+model_all_tax <- model_all_fun_nest %>%
   mutate(
-    area = rescale_01(area),
-    dist = rescale_01(dist),
-    age  = rescale_01(age),
-    temp = rescale_01(temp)
+    ecosystem = case_when(
+      taxa %in% c("Coral", "Fish")  ~ "Marine",
+      taxa %in% c("Plant", "Bird")  ~ "Terrestrial"
+    )
   )
 
-epsilon <- 1e-4
+model_all_tax$ecosystem <- factor(
+  model_all_tax$ecosystem,
+  levels = c("Marine", "Terrestrial")
+)
 
-model_all_fun_nest_scaled <- model_all_fun_nest_scaled %>%
+
+##
+
+model_all_tax_scaled <- model_all_tax %>%
+  
+  # global variables
+  mutate(
+    age  = rescale_01(age),
+    dist = rescale_01(dist)
+  ) %>%
+  
+  # ecosystem variables
+  group_by(ecosystem) %>%
+  mutate(
+    area = rescale_01(area),
+    temp = rescale_01(temp)
+  ) %>%
+  ungroup()
+
+
+### Scaling again
+
+epsilon <- 1e-4  # um valor pequeno
+
+model_all_fun_nest_scaled <- model_all_tax_scaled %>%
   mutate(
     beta_sne_rescaled = beta_sne * (1 - 2 * epsilon) + epsilon
   )
@@ -1300,7 +1342,7 @@ mod_fun_bayes_nest_model2 <- add_criterion(mod_fun_bayes_nest_model2, "loo", sav
 
 saveRDS(
   mod_fun_bayes_nest_model2,
-  "/home/student/Documents/Luiza/New models/Inter_Data/model_beta_all_functional_nest_present.rds"
+  "/home/student/Islands_Biogeography/Inter_Data/model_beta_all_functional_nest_present.rds"
 )
 
 
@@ -1332,7 +1374,7 @@ fun_nest_pres <- ggplot(post_env_fun_nest, aes(x = .value, y = parameter, fill =
 coral_fun_turn <- model_corals_functional %>%
   mutate(taxa = "Coral", dist = Distance, area = diff_reef_area, temp = diff_sst,
          age = diff_age, group2 = Group2, group1 = Group1) %>%
-  select(beta_sim, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
+  select(beta_sim, Archipelago1.model, Archipelago2.model, taxa, area, dist, age, temp, group2, group1)
 
 fish_fun_turn <- model_fish_functional %>%
   mutate(taxa = "Fish", dist = Distance, area = diff_reef_area, temp = diff_sst,
@@ -1353,23 +1395,55 @@ bird_fun_turn <- model_birds_functional %>%
 model_all_fun_turn <- bind_rows(coral_fun_turn, fish_fun_turn, plant_fun_turn, bird_fun_turn)
 model_all_fun_turn$taxa <- factor(model_all_fun_turn$taxa, levels = c("Coral", "Fish", "Plant", "Bird"))
 
-# Scale
+# Scaling up variables per ecosystem type
 
-model_all_fun_turn_scaled <- model_all_fun_turn %>%
+# 0 and 1
+rescale_01 <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+
+model_all_tax <- model_all_fun_turn %>%
   mutate(
-    area = rescale_01(area),
-    dist = rescale_01(dist),
-    age  = rescale_01(age),
-    temp = rescale_01(temp)
+    ecosystem = case_when(
+      taxa %in% c("Coral", "Fish")  ~ "Marine",
+      taxa %in% c("Plant", "Bird")  ~ "Terrestrial"
+    )
   )
 
-epsilon <- 1e-4
+model_all_tax$ecosystem <- factor(
+  model_all_tax$ecosystem,
+  levels = c("Marine", "Terrestrial")
+)
 
-model_all_fun_turn_scaled <- model_all_fun_turn_scaled %>%
+
+##
+
+model_all_tax_scaled <- model_all_tax %>%
+  
+  # global variables
+  mutate(
+    age  = rescale_01(age),
+    dist = rescale_01(dist)
+  ) %>%
+  
+  # ecosystem variables
+  group_by(ecosystem) %>%
+  mutate(
+    area = rescale_01(area),
+    temp = rescale_01(temp)
+  ) %>%
+  ungroup()
+
+
+### Scaling again
+
+epsilon <- 1e-4  # um valor pequeno
+
+model_all_fun_turn_scaled <- model_all_tax_scaled %>%
   mutate(
     beta_sim_rescaled = beta_sim * (1 - 2 * epsilon) + epsilon
   )
-
 
 # Model
 mod_fun_bayes_turn_model2 <- brm(
@@ -1391,7 +1465,7 @@ mod_fun_bayes_turn_model2 <- add_criterion(mod_fun_bayes_turn_model2, "loo", sav
 
 saveRDS(
   mod_fun_bayes_turn_model2,
-  "/home/student/Documents/Luiza/New models/Inter_Data/model_beta_all_functional_turn_present.rds"
+  "/home/student/Islands_Biogeography/Inter_Data/model_beta_all_functional_turn_present.rds"
 )
 
 
@@ -1422,9 +1496,11 @@ fun_turn_pres <- ggplot(post_env_fun_turn, aes(x = .value, y = parameter, fill =
 
 #### Beta functional NEST PAST ----------------------------------------------------
 
-# Corais funcionais
+# Coral
 coral_fun_nest_past <- model_corals_functional %>%
   mutate(
+    Archipelago1 = Archipelago1.model,
+    Archipelago2 = Archipelago2.model,
     taxa = "Coral",
     dist = Distance,
     area = diff_past_reef_area,
@@ -1435,9 +1511,11 @@ coral_fun_nest_past <- model_corals_functional %>%
   ) %>%
   select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 
-# Peixes funcionais
+# Fish
 fish_fun_nest_past <- model_fish_functional %>%
   mutate(
+    Archipelago1 = Archipelago1,
+    Archipelago2 = Archipelago2,
     taxa = "Fish",
     dist = Distance,
     area = diff_past_reef_area,
@@ -1448,9 +1526,11 @@ fish_fun_nest_past <- model_fish_functional %>%
   ) %>%
   select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 
-# Plantas funcionais
+# Plants
 plant_fun_nest_past <- model_plants_functional %>%
   mutate(
+    Archipelago1 = Archipelago1,
+    Archipelago2 = Archipelago2,
     taxa = "Plant",
     dist = Distance,
     area = diff_past_area,
@@ -1461,9 +1541,11 @@ plant_fun_nest_past <- model_plants_functional %>%
   ) %>%
   select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 
-# Aves funcionais
+# Birds
 bird_fun_nest_past <- model_birds_functional %>%
   mutate(
+    Archipelago1 = Archipelago1,
+    Archipelago2 = Archipelago2,
     taxa = "Bird",
     dist = Distance,
     area = diff_past_area,
@@ -1478,20 +1560,56 @@ bird_fun_nest_past <- model_birds_functional %>%
 model_all_fun_nest_past <- bind_rows(coral_fun_nest_past, fish_fun_nest_past, plant_fun_nest_past, bird_fun_nest_past)
 model_all_fun_nest_past$taxa <- factor(model_all_fun_nest_past$taxa, levels = c("Coral", "Fish", "Plant", "Bird"))
 
-# Scale variables
-model_all_fun_nest_scaled_past <- model_all_fun_nest_past %>%
+# Scaling up variables per ecosystem type
+
+# 0 and 1
+rescale_01 <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+
+model_all_tax <- model_all_fun_nest_past %>%
   mutate(
-    area = rescale_01(area),
-    dist = rescale_01(dist),
-    age  = rescale_01(age),
-    temp = rescale_01(temp)
+    ecosystem = case_when(
+      taxa %in% c("Coral", "Fish")  ~ "Marine",
+      taxa %in% c("Plant", "Bird")  ~ "Terrestrial"
+    )
   )
 
-epsilon <- 1e-4
-model_all_fun_nest_scaled_past <- model_all_fun_nest_scaled_past %>%
+model_all_tax$ecosystem <- factor(
+  model_all_tax$ecosystem,
+  levels = c("Marine", "Terrestrial")
+)
+
+
+##
+
+model_all_tax_scaled <- model_all_tax %>%
+  
+  # global variables
+  mutate(
+    age  = rescale_01(age),
+    dist = rescale_01(dist)
+  ) %>%
+  
+  # ecosystem variables
+  group_by(ecosystem) %>%
+  mutate(
+    area = rescale_01(area),
+    temp = rescale_01(temp)
+  ) %>%
+  ungroup()
+
+
+### Scaling again
+
+epsilon <- 1e-4  
+
+model_all_fun_nest_scaled_past <- model_all_tax_scaled %>%
   mutate(
     beta_sne_rescaled_past = beta_sne * (1 - 2 * epsilon) + epsilon
   )
+
 
 # Model
 mod_fun_bayes_nest_past_model2 <- brm(
@@ -1514,7 +1632,7 @@ mod_fun_bayes_nest_past_model2 <- add_criterion(mod_fun_bayes_nest_past_model2, 
 
 saveRDS(
   mod_fun_bayes_nest_past_model2,
-  "/home/student/Documents/Luiza/New models/Inter_Data/model_beta_all_functional_nest_past.rds"
+  "/home/student/Islands_Biogeography/Inter_Data/model_beta_all_functional_nest_past.rds"
 )
 
 
@@ -1546,7 +1664,7 @@ fun_nest_past <- ggplot(post_env_fun_nest_past, aes(x = .value, y = parameter, f
 coral_fun_turn_past <- model_corals_functional %>%
   mutate(taxa = "Coral", dist = Distance, area = diff_past_reef_area, temp = diff_past_sst,
          age = diff_age, group2 = Group2, group1 = Group1) %>%
-  select(beta_sim, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
+  select(beta_sim, Archipelago1.model, Archipelago2.model, taxa, area, dist, age, temp, group2, group1)
 
 fish_fun_turn_past <- model_fish_functional %>%
   mutate(taxa = "Fish", dist = Distance, area = diff_past_reef_area, temp = diff_past_sst,
@@ -1567,21 +1685,56 @@ bird_fun_turn_past <- model_birds_functional %>%
 model_all_fun_turn_past <- bind_rows(coral_fun_turn_past, fish_fun_turn_past, plant_fun_turn_past, bird_fun_turn_past)
 model_all_fun_turn_past$taxa <- factor(model_all_fun_turn_past$taxa, levels = c("Coral", "Fish", "Plant", "Bird"))
 
-# Scale variables
-model_all_fun_turn_past_scaled <- model_all_fun_turn_past %>%
+# Scaling up variables per ecosystem type
+
+# 0 and 1
+rescale_01 <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+
+model_all_tax <- model_all_fun_turn_past %>%
   mutate(
-    area = rescale_01(area),
-    dist = rescale_01(dist),
-    age  = rescale_01(age),
-    temp = rescale_01(temp)
+    ecosystem = case_when(
+      taxa %in% c("Coral", "Fish")  ~ "Marine",
+      taxa %in% c("Plant", "Bird")  ~ "Terrestrial"
+    )
   )
 
-epsilon <- 1e-4
+model_all_tax$ecosystem <- factor(
+  model_all_tax$ecosystem,
+  levels = c("Marine", "Terrestrial")
+)
 
-model_all_fun_turn_past_scaled <- model_all_fun_turn_past_scaled %>%
+
+##
+
+model_all_tax_scaled <- model_all_tax %>%
+  
+  # global variables
+  mutate(
+    age  = rescale_01(age),
+    dist = rescale_01(dist)
+  ) %>%
+  
+  # ecosystem variables
+  group_by(ecosystem) %>%
+  mutate(
+    area = rescale_01(area),
+    temp = rescale_01(temp)
+  ) %>%
+  ungroup()
+
+
+### Scaling again
+
+epsilon <- 1e-4  # um valor pequeno
+
+model_all_fun_turn_past_scaled <- model_all_tax_scaled %>%
   mutate(
     beta_sim_rescaled_past = beta_sim * (1 - 2 * epsilon) + epsilon
   )
+
 
 # Model
 mod_fun_bayes_turn_past_model2 <- brm(
@@ -1604,7 +1757,7 @@ mod_fun_bayes_turn_past_model2 <- add_criterion(mod_fun_bayes_turn_past_model2, 
 
 saveRDS(
   mod_fun_bayes_turn_past_model2,
-  "/home/student/Documents/Luiza/New models/Inter_Data/model_beta_all_functional_turn_past.rds"
+  "/home/student/Islands_Biogeography/Inter_Data/model_beta_all_functional_turn_past.rds"
 )
 
 
@@ -1910,7 +2063,7 @@ ggplot(all_taxonomic,
     slab_color = NA
   ) +
   geom_vline(xintercept = 0, linetype = "dashed") +
-  coord_cartesian(xlim = c(-5, 20)) +
+  coord_cartesian(xlim = c(-2.5, 2.5)) +
   facet_grid(Variable ~ Time + Component, scales = "free_x") +
   theme_minimal() +
   theme(
