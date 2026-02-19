@@ -1,3 +1,21 @@
+
+### Packages
+
+library(glmmTMB)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(broom.mixed)
+library(sjPlot)
+
+
+if (!require("pacman")) install.packages("pacman")
+
+pacman::p_load(tidyverse, BiocManager, rstan, brms, tidybayes, bayestestR, bayesplot, shinystan, marginaleffects, cowplot,
+               tidymodels, xgboost, caret, doSNOW, modelr, paletteer, forcats, patchwork, parameters, ggeffects, ggridges, gganimate, gifski, transformr, glmmTMB, emmeans
+)
+
+
 #Beta diversity and variables data ----
 
 
@@ -37,7 +55,7 @@ model_birds_taxonomic <- read.csv("model_data_birds_taxonomic_arch.csv", header 
   mutate_if(is.character, as.factor) %>% glimpse
 
 # Birds functional -----
-model_birds_functional <- read.csv("model_data_birds_functional_arch.csv", header = TRUE) %>% 
+model_birds_functional <- read.csv("model_data_bird_functional_arch.csv", header = TRUE) %>% 
   mutate_if(is.character, as.factor) %>% glimpse
 
 
@@ -55,14 +73,11 @@ message("using chains=", chains, " threads_per_chain=", threads_per_chain,
 
 #### Beta taxonomic NEST PRESENT ----------------------------------------------------
 
-
-# 1. Adicionar taxa e criar area, temp, group2
-
-# Corais taxonômicos
+# Corais taxonomic
 coral_tax <- model_corals_taxonomic %>%
   mutate(
-    Archipelago1 = Archipelago1,
-    Archipelago2 = Archipelago2,
+    Archipelago1 = Archipelago1.model,
+    Archipelago2 = Archipelago2.model,
     taxa = "Coral",
     dist = Distance,      
     area = diff_reef_area,
@@ -72,7 +87,7 @@ coral_tax <- model_corals_taxonomic %>%
     group1 = Group1
   )
 
-# Peixes taxonômicos
+# Fish taxonomic
 fish_tax <- model_fish_taxonomic %>%
   mutate(
     Archipelago1 = Archipelago1,
@@ -86,7 +101,7 @@ fish_tax <- model_fish_taxonomic %>%
     group1 = Group1
   )
 
-# Plantas taxonômicas
+# Plants taxonomic
 plant_tax <- model_plants_taxonomic %>%
   mutate(
     Archipelago1 = Archipelago1,
@@ -100,7 +115,7 @@ plant_tax <- model_plants_taxonomic %>%
     group1 = Group1
   )
 
-# Aves taxonômicas
+# Birds taxonomic
 bird_tax <- model_birds_taxonomic %>%
   mutate(
     Archipelago1 = Archipelago1,
@@ -114,36 +129,58 @@ bird_tax <- model_birds_taxonomic %>%
     group1 = Group1
   )
 
-# 2. Selecionar apenas as colunas que vamos usar no modelo
+# selecting columns
 coral_tax <- coral_tax %>% select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 fish_tax  <- fish_tax  %>% select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 plant_tax <- plant_tax %>% select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 bird_tax  <- bird_tax  %>% select(beta_sne, Archipelago1, Archipelago2, taxa, area, dist, age, temp, group2, group1)
 
-# 3. Combinar todas as tabelas
+# combining 
 model_all_tax <- bind_rows(coral_tax, fish_tax, plant_tax, bird_tax)
 
 model_all_tax$taxa <- factor(model_all_tax$taxa, levels = c("Coral", "Fish", "Plant", "Bird"))
 
 ###
 
-
-# Scaling up variables
+# Scaling up variables per ecosystem type
 
 # 0 and 1
 rescale_01 <- function(x) {
   (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
 }
 
-# Dataframe
-model_all_tax_scaled <- model_all_tax %>%
+
+model_all_tax <- model_all_tax %>%
   mutate(
-    area = rescale_01(area),
-    dist = rescale_01(dist),
-    age  = rescale_01(age),
-    temp = rescale_01(temp)
+    ecosystem = case_when(
+      taxa %in% c("Coral", "Fish")  ~ "Marine",
+      taxa %in% c("Plant", "Bird")  ~ "Terrestrial"
+    )
   )
 
+model_all_tax$ecosystem <- factor(
+  model_all_tax$ecosystem,
+  levels = c("Marine", "Terrestrial")
+)
+
+
+##
+
+model_all_tax_scaled <- model_all_tax %>%
+  
+  # global variables
+  mutate(
+    age  = rescale_01(age),
+    dist = rescale_01(dist)
+  ) %>%
+  
+  # ecosystem variables
+  group_by(ecosystem) %>%
+  mutate(
+    area = rescale_01(area),
+    temp = rescale_01(temp)
+  ) %>%
+  ungroup()
 
 
 ### Scaling again
@@ -263,8 +300,8 @@ tax_nest_pres <-  ggplot(
 
 coral_turn_pres <- model_corals_taxonomic %>%
   mutate(
-    Archipelago1 = Archipelago1,
-    Archipelago2 = Archipelago2,
+    Archipelago1 = Archipelago1.model,
+    Archipelago2 = Archipelago2.model,
     taxa = "Coral",
     dist = Distance,
     area = diff_reef_area,
@@ -341,27 +378,58 @@ model_all_tax_turn_pres$taxa <- factor(
 )
 
 
-## Scale
+###
 
-model_all_tax_turn_pres_scaled <- model_all_tax_turn_pres %>%
+# Scaling up variables per ecosystem type
+
+# 0 and 1
+rescale_01 <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+
+model_all_tax <- model_all_tax_turn_pres %>%
   mutate(
-    area = rescale_01(area),
-    dist = rescale_01(dist),
-    age  = rescale_01(age),
-    temp = rescale_01(temp)
+    ecosystem = case_when(
+      taxa %in% c("Coral", "Fish")  ~ "Marine",
+      taxa %in% c("Plant", "Bird")  ~ "Terrestrial"
+    )
   )
 
+model_all_tax$ecosystem <- factor(
+  model_all_tax$ecosystem,
+  levels = c("Marine", "Terrestrial")
+)
 
-## Scale beta sim
-
-epsilon <- 1e-4
-
-model_all_tax_turn_pres_scaled <- model_all_tax_turn_pres_scaled %>%
-  mutate(
-    beta_sim_rescaled = beta_sim * (1 - 2 * epsilon) + epsilon
-  )
 
 ##
+
+model_all_tax_scaled <- model_all_tax %>%
+  
+  # global variables
+  mutate(
+    age  = rescale_01(age),
+    dist = rescale_01(dist)
+  ) %>%
+  
+  # ecosystem variables
+  group_by(ecosystem) %>%
+  mutate(
+    area = rescale_01(area),
+    temp = rescale_01(temp)
+  ) %>%
+  ungroup()
+
+
+### Scaling again
+
+epsilon <- 1e-4  # um valor pequeno
+
+model_all_tax_scaled <- model_all_tax_scaled %>%
+  mutate(
+    beta_sne_rescaled = beta_sim * (1 - 2 * epsilon) + epsilon
+  )
+
 
 # Model
 
@@ -470,8 +538,8 @@ tax_turn_pres <- ggplot(
 
 coral_tax_past <- model_corals_taxonomic %>%
   mutate(
-    Archipelago1 = Archipelago1,
-    Archipelago2 = Archipelago2,
+    Archipelago1 = Archipelago1.model,
+    Archipelago2 = Archipelago2.model,
     taxa = "Coral",
     dist = Distance,      
     area = diff_past_reef_area,
@@ -559,20 +627,52 @@ model_all_tax_past$taxa <- factor(
   levels = c("Coral", "Fish", "Plant", "Bird")
 )
 
-# Scale
+# Scaling up variables per ecosystem type
 
-model_all_tax_past_scaled <- model_all_tax_past %>%
+# 0 and 1
+rescale_01 <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+
+model_all_tax <- model_all_tax_past %>%
   mutate(
-    area = rescale_01(area),
-    dist = rescale_01(dist),
-    age  = rescale_01(age),
-    temp = rescale_01(temp)
+    ecosystem = case_when(
+      taxa %in% c("Coral", "Fish")  ~ "Marine",
+      taxa %in% c("Plant", "Bird")  ~ "Terrestrial"
+    )
   )
 
+model_all_tax$ecosystem <- factor(
+  model_all_tax$ecosystem,
+  levels = c("Marine", "Terrestrial")
+)
 
-epsilon <- 1e-4
 
-model_all_tax_past_scaled <- model_all_tax_past_scaled %>%
+##
+
+model_all_tax_scaled <- model_all_tax %>%
+  
+  # global variables
+  mutate(
+    age  = rescale_01(age),
+    dist = rescale_01(dist)
+  ) %>%
+  
+  # ecosystem variables
+  group_by(ecosystem) %>%
+  mutate(
+    area = rescale_01(area),
+    temp = rescale_01(temp)
+  ) %>%
+  ungroup()
+
+
+### Scaling again
+
+epsilon <- 1e-4  # um valor pequeno
+
+model_all_tax_scaled <- model_all_tax_scaled %>%
   mutate(
     beta_sne_rescaled = beta_sne * (1 - 2 * epsilon) + epsilon
   )
@@ -683,8 +783,8 @@ tax_nest_past <- ggplot(
 
 coral_tax_past <- model_corals_taxonomic %>%
   mutate(
-    Archipelago1 = Archipelago1,
-    Archipelago2 = Archipelago2,
+    Archipelago1 = Archipelago1.model,
+    Archipelago2 = Archipelago2.model,
     taxa = "Coral",
     dist = Distance,      
     area = diff_past_reef_area,
@@ -771,24 +871,54 @@ model_all_tax_past_sim$taxa <- factor(
 )
 
 
-## Scale
+# Scaling up variables per ecosystem type
 
-model_all_tax_past_sim_scaled <- model_all_tax_past_sim %>%
+# 0 and 1
+rescale_01 <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+
+model_all_tax <- model_all_tax_past_sim %>%
   mutate(
-    area = rescale_01(area),
-    dist = rescale_01(dist),
-    age  = rescale_01(age),
-    temp = rescale_01(temp)
+    ecosystem = case_when(
+      taxa %in% c("Coral", "Fish")  ~ "Marine",
+      taxa %in% c("Plant", "Bird")  ~ "Terrestrial"
+    )
   )
+
+model_all_tax$ecosystem <- factor(
+  model_all_tax$ecosystem,
+  levels = c("Marine", "Terrestrial")
+)
 
 
 ##
 
-epsilon <- 1e-4
-
-model_all_tax_past_sim_scaled <- model_all_tax_past_sim_scaled %>%
+model_all_tax_scaled <- model_all_tax %>%
+  
+  # global variables
   mutate(
-    beta_sim_rescaled = beta_sim * (1 - 2 * epsilon) + epsilon
+    age  = rescale_01(age),
+    dist = rescale_01(dist)
+  ) %>%
+  
+  # ecosystem variables
+  group_by(ecosystem) %>%
+  mutate(
+    area = rescale_01(area),
+    temp = rescale_01(temp)
+  ) %>%
+  ungroup()
+
+
+### Scaling again
+
+epsilon <- 1e-4  # um valor pequeno
+
+model_all_tax_scaled <- model_all_tax_scaled %>%
+  mutate(
+    beta_sne_rescaled = beta_sim * (1 - 2 * epsilon) + epsilon
   )
 
 
